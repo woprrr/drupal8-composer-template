@@ -1,0 +1,44 @@
+#Ignore file endind with map
+*.map
+
+sites/*/*settings*.php
+
+# Ignore paths that contain generated content.
+web/sites/*/files
+web/sites/*/private
+
+# Ignore PHPSTORM files.
+.idea
+.idea/*
+
+# Ignore default text files
+/CHANGELOG.txt
+/COPYRIGHT.txt
+/INSTALL*.txt
+/LICENSE.txt
+/MAINTAINERS.txt
+/UPGRADE.txt
+/README.txt
+sites/all/README.txt
+sites/all/modules/README.txt
+sites/all/themes/README.txt
+
+web/core/web.config
+web/core/authorize.php
+web/core/update.php
+web/core/xmlrpc.php
+
+composer.phar
+web/sites/default/settings.local.php
+web/sites/default/settings.php
+web/sites/development.services.yml
+
+settings/drush-config.sh
+settings/settings.local.php
+settings/development.services.yml
+
+vendor
+web/core
+web/modules/contrib
+web/themes/contrib
+web/profiles/contrib
