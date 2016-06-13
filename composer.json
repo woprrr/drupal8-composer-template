@@ -2,7 +2,7 @@
   "name": "Drupal 8 Composer architecture",
   "description": "An project architecture of Drupal 8",
   "type": "project",
-  "license": "proprietary",
+  "license": "GPL-2.0+",
   "authors": [
     {
       "name": "Alexandre MALLET",
