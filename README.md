@@ -7,23 +7,23 @@ WARNING: This step is require before Run any Script thanks to read all instructi
 ### Drupal developement services
 
 Copy & edit settings/example.development.services.yml file to override Drupal services parameters like cache backend, twig options
-```
-$ cp settings/example.development.services.yml settings/development.services.yml
+```bash
+cp settings/example.development.services.yml settings/development.services.yml
 ```
 
 ### Drupal local settings
 
 Copy & edit settings/example.settings.local.php file to add your custom configurations, database access , or specific variables has your Drupal instance.
 
-```
-$ cp settings/example.settings.local.php settings/settings.local.php
+```bash
+cp settings/example.settings.local.php settings/settings.local.php
 ```
 
 ### Drush site install / update parameters
 
 Copy & edit settings/example.drush-config.sh file to configure your Drupal instance informations.
-```
-$ cp settings/example.drush-config.sh settings/drush-config.sh
+```bash
+cp settings/example.drush-config.sh settings/drush-config.sh
 ```
 
 That variables are used by drush during installation process.
@@ -40,13 +40,13 @@ That variables are used by drush during installation process.
 
 After cloning the file we can install all modules listed into composer.json file for install all dependencies of your project.
 To tell composer install all modules needed execute that command :
-```
-$ composer install
+```bash
+composer install
 ```
 
 After installation your Drupal & contributor modules are correctly download and present in web/ folder. If you have correctly configure your project @see `settings/examples.*` files.
-```
-$ composer site-install
+```bash
+composer site-install
 ```
 
 The composer site-install run `/../scripts/site-install.sh` file and execute all commands needed to (re)install an fresh Drupal 8 instance.
@@ -57,8 +57,8 @@ ATM this method need to duplicate your configuration files into modules/install 
 ## Run update
 
 If you have already an active Drupal 8 instance you can run update script.
-```
-$ composer site-update
+```bash
+composer site-update
 ```
 
 During the update site-update script re-syncronize all configurations of `CONFIG_SYNC_DIRECTORY` folder (by default /../config).
@@ -66,16 +66,16 @@ During the update site-update script re-syncronize all configurations of `CONFIG
 ### Update project modules
 
 To process an modules update with update script you need to edit your composer.json file and modify version of existing module. After modification of composer.json file you can use the common command
-```
-$ composer update <package_name>
+```bash
+composer update <package_name>
 ```
 
 By example for update drupal core version with that method
-```
-$ composer update drupal/core
+```bash
+composer update drupal/core
 ```
 
 Now to apply your changes you can run site-update scripts to applies configurations upadates.
-```
-$ composer site-update
+```bash
+composer site-update
 ```
