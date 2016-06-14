@@ -54,6 +54,58 @@ WARNING : If you re-execute this script after an installation without configurat
 
 ATM this method need to duplicate your configuration files into modules/install && /../config/ folder to allow two modes coexist. It's possible to use an same method like [Config Installer]: https://www.drupal.org/project/config_installer to import all configurations since same `/../config/` folder.
 
+### Re-Run Complete installation
+
+/!\ WARNING /!\ After your first installation "composer site- install' or manualy, if you need to re-install your site with your configuration exported in `/../config/` folder.
+YOU DO UNCOMMENT COMMENTED PART in `/../scripts/site-install.sh`. REPLACE "xxxxxx" PART BY UUID CORRESPOND TO YOUR FIRST CONFIG.
+```
+# Enforce system.site uuid to prevent config missmatch in re-install with config syncronization of old instance.
+#$DRUSH cset system.site uuid "xxxxxxxx" -y
+#$DRUSH cset shortcut.set.default uuid "xxxxxxxxx" -y
+
+## Enforce language.entity.fr uuid
+## to prevent the atempt to remove the default language configuration if you have choose FR in default language.
+#$DRUSH cset language.entity.fr uuid "xxxxxxxxxxx" -y
+
+```
+
+ATM This script no retrive that after running `$DRUSH site-install` command. This action is needed only after your first install for prevent all missmatch about UUID into instances.
+
+To retrive your `system.site uuid` you can use that commands :
+
+System.site :
+```
+drush cget system.site uuid -y
+
+```
+
+Only if you use `Standard` Profile or an profile using `Shortcut` module you must get uuid too.
+```
+drush cget shortcut.set.default uuid -y
+
+```
+
+If you install your site with specific locale (language) you must retrive uuid too to prevent missmatch (only if it's an default language).
+```
+drush cget language.entity.fr uuid -y
+
+```
+
+AFTER correctly uncomment you can re-run install command `composer site-install`
+Example when i uncomment this part :
+```
+## Enforce system.site uuid.
+#$DRUSH cset system.site uuid "ea3db32f-fb7b-4b43-8818-7d4af9618034" -y
+#$DRUSH cset shortcut.set.default uuid "b36fff8d-b146-446e-8bad-1f0ff779c464" -y
+
+## Enforce language.entity.fr uuid
+## to prevent the atempt to remove the default language configuration.
+#$DRUSH cset language.entity.fr uuid "6f8a956a-9621-4b95-ac41-479c108e6812" -y
+
+```
+
+/!\ After upgrade on 8.2.x this trick is not necessary, CMI have fix this limitation when we need to syncronize your configuration. [Do Issue]: https://www.drupal.org/node/1613424 /!\
+
 ## Run update
 
 If you have already an active Drupal 8 instance you can run update script.

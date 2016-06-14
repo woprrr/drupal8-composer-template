@@ -37,6 +37,15 @@ $DRUSH site-install -y \
 # Cache rebuild.
 $DRUSH cr
 
+## Enforce system.site uuid.
+#$DRUSH cset system.site uuid "xxxxxxxxxxxxxxxxxxxxxxx" -y
+# ONLY IF YOU HAVE INSTALLED SHORTCUT MODULE.
+#$DRUSH cset shortcut.set.default uuid "xxxxxxxxxxxxxxxxxxxxxxxxxxx" -y
+
+## Enforce language.entity.fr uuid
+## to prevent the atempt to remove the default language configuration.
+#$DRUSH cset language.entity.fr uuid "xxxxxxxxxxxxxxxxxxxxx" -y
+
 # Import configuration files This command use the configuration of modules/profiles not `/../config/`.
 $DRUSH cim --quiet -y
 
