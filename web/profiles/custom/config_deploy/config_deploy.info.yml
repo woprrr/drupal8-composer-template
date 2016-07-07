@@ -1,3 +1,0 @@
-name: 'Configuration deploy'
-type: profile
-description: 'Use configuration from another Drupal site to install a Drupal instance. Suitable for advanced users.'
