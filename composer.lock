@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c9aa885b3d5cd14ae0b17d7bdad8a8f4",
-    "content-hash": "8a29c6d7bff7225f49390f4ca5603289",
+    "hash": "04c21a1e8af8779d9e2204d6b3703801",
+    "content-hash": "48dd5b4e0fb647b4e4961596267b9892",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -881,16 +881,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.1.0",
+            "version": "8.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal-composer/drupal-core.git",
-                "reference": "78fb721295521bd9680731cf2a8287fb6e889afe"
+                "reference": "f773dd668996b9dde92d2e9a99ee03a4287a0804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/78fb721295521bd9680731cf2a8287fb6e889afe",
-                "reference": "78fb721295521bd9680731cf2a8287fb6e889afe",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-core/zipball/f773dd668996b9dde92d2e9a99ee03a4287a0804",
+                "reference": "f773dd668996b9dde92d2e9a99ee03a4287a0804",
                 "shasum": ""
             },
             "require": {
@@ -945,12 +945,15 @@
                 "drupal/content_translation": "self.version",
                 "drupal/contextual": "self.version",
                 "drupal/core-annotation": "self.version",
+                "drupal/core-assertion": "self.version",
                 "drupal/core-bridge": "self.version",
                 "drupal/core-datetime": "self.version",
+                "drupal/core-dependency-injection": "self.version",
                 "drupal/core-diff": "self.version",
                 "drupal/core-discovery": "self.version",
                 "drupal/core-event-dispatcher": "self.version",
                 "drupal/core-file-cache": "self.version",
+                "drupal/core-filesystem": "self.version",
                 "drupal/core-gettext": "self.version",
                 "drupal/core-graph": "self.version",
                 "drupal/core-php-storage": "self.version",
@@ -1014,7 +1017,7 @@
                 "drupal/views_ui": "self.version"
             },
             "require-dev": {
-                "behat/mink": "~1.6",
+                "behat/mink": "~1.7",
                 "behat/mink-goutte-driver": "~1.2",
                 "jcalderonzumba/gastonjs": "~1.0.2",
                 "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
@@ -1029,10 +1032,8 @@
                     "Drupal\\Component\\": "lib/Drupal/Component",
                     "Drupal\\Driver\\": "../drivers/lib/Drupal/Driver"
                 },
-                "files": [
-                    "lib/Drupal.php"
-                ],
                 "classmap": [
+                    "lib/Drupal.php",
                     "lib/Drupal/Component/Utility/Timer.php",
                     "lib/Drupal/Component/Utility/Unicode.php",
                     "lib/Drupal/Core/Database/Database.php",
@@ -1046,7 +1047,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2016-04-20 01:34:34"
+            "time": "2016-07-05 08:59:22"
         },
         {
             "name": "drupal/crop",
@@ -1512,7 +1513,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/memcache-8.x-2.0-alpha1.zip",
-                "reference": null,
+                "reference": "ed786f33095fa2478761676ceed0bb0b16a63f0d",
                 "shasum": null
             },
             "require": {

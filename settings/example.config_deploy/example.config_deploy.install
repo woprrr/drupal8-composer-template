@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the minimal installation profile.
+ */
+
+function config_deploy_install() {
+
+  $config_sync_directorie = $GLOBALS['config_directories']['sync'];
+
+  $file_storage = new \Drupal\Core\Config\FileStorage($config_sync_directorie);
+
+  $system_site = $file_storage->read('system.site');
+  if (isset($system_site['uuid'])) {
+    \Drupal::configFactory()
+      ->getEditable('system.site')
+      ->set('uuid', $system_site['uuid'])
+      ->save();
+  }
+
+}
