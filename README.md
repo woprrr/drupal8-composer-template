@@ -52,59 +52,45 @@ composer site-install
 The composer site-install run `/../scripts/site-install.sh` file and execute all commands needed to (re)install an fresh Drupal 8 instance.
 WARNING : If you re-execute this script after an installation without configuration export to export your changes, any changes will be lost !
 
-ATM this method need to duplicate your configuration files into modules/install && /../config/ folder to allow two modes coexist. It's possible to use an same method like [Config Installer]: https://www.drupal.org/project/config_installer to import all configurations since same `/../config/` folder.
-
 ### Re-Run Complete installation
+To re-install your instance with new configuration or after an `composer export-conf` you do have an special profile to use this mode.
+You have an example profile available in `settings/example.config_deploy/*` you can copy / paste this folder into `/web/profiles/custom/` folder.
 
-/!\ WARNING /!\ After your first installation "composer site- install' or manualy, if you need to re-install your site with your configuration exported in `/../config/` folder.
-YOU DO UNCOMMENT COMMENTED PART in `/../scripts/site-install.sh`. REPLACE "xxxxxx" PART BY UUID CORRESPOND TO YOUR FIRST CONFIG.
-```
-# Enforce system.site uuid to prevent config missmatch in re-install with config syncronization of old instance.
-#$DRUSH cset system.site uuid "xxxxxxxx" -y
-#$DRUSH cset shortcut.set.default uuid "xxxxxxxxx" -y
+After copy/paste you can rename your install profile and edit it but you NEED yo preserve that function onto `your_profile/your_profile.install`
+```php
+function your_profile_install() {
 
-## Enforce language.entity.fr uuid
-## to prevent the atempt to remove the default language configuration if you have choose FR in default language.
-#$DRUSH cset language.entity.fr uuid "xxxxxxxxxxx" -y
+  $config_sync_directorie = $GLOBALS['config_directories']['sync'];
 
-```
+  $file_storage = new \Drupal\Core\Config\FileStorage($config_sync_directorie);
 
-ATM This script no retrive that after running `$DRUSH site-install` command. This action is needed only after your first install for prevent all missmatch about UUID into instances.
+  $system_site = $file_storage->read('system.site');
+  if (isset($system_site['uuid'])) {
+    \Drupal::configFactory()
+      ->getEditable('system.site')
+      ->set('uuid', $system_site['uuid'])
+      ->save();
+  }
 
-To retrive your `system.site uuid` you can use that commands :
-
-System.site :
-```
-drush cget system.site uuid -y
-
+}
 ```
 
-Only if you use `Standard` Profile or an profile using `Shortcut` module you must get uuid too.
+That function permit to preserve your previous system.site uuid and set it on your new instance. That method is similar to [Config Installer]: https://www.drupal.org/project/config_installer and discuss with @Alexpot.
+
+After that profile correctly configured you can edit `settings/drush-config.sh` and change that line :
+
+```bash
+# If you have an specific profile to install your site define here.
+export DRUSH_INSTALL_PROFILE="config_deploy"
 ```
-drush cget shortcut.set.default uuid -y
+to
 
-```
-
-If you install your site with specific locale (language) you must retrive uuid too to prevent missmatch (only if it's an default language).
-```
-drush cget language.entity.fr uuid -y
-
-```
-
-AFTER correctly uncomment you can re-run install command `composer site-install`
-Example when i uncomment this part :
-```
-## Enforce system.site uuid.
-#$DRUSH cset system.site uuid "ea3db32f-fb7b-4b43-8818-7d4af9618034" -y
-#$DRUSH cset shortcut.set.default uuid "b36fff8d-b146-446e-8bad-1f0ff779c464" -y
-
-## Enforce language.entity.fr uuid
-## to prevent the atempt to remove the default language configuration.
-#$DRUSH cset language.entity.fr uuid "6f8a956a-9621-4b95-ac41-479c108e6812" -y
-
+```bash
+# If you have an specific profile to install your site define here.
+export DRUSH_INSTALL_PROFILE="your_profile"
 ```
 
-/!\ After upgrade on 8.2.x this trick is not necessary, CMI have fix this limitation when we need to syncronize your configuration. [Do Issue]: https://www.drupal.org/node/1613424 /!\
+You are totaly free to custom your profile except delete `your_profile_install()` function.
 
 ## Run update
 
@@ -131,3 +117,9 @@ Now to apply your changes you can run site-update scripts to applies configurati
 ```bash
 composer site-update
 ```
+
+### General questions
+
+- After install my profile all actions tabs / local tabs are missing ?
+-- Yes ! particulary if you use Bartik / Seven on Default / admin theme. You must install correct blocks in regions to add it. 
+For solve it go to `web/core/profile/standard/config` and copy all blocks prefixed by 'block.block.bartik_*' & 'block.block.seven_*' and paste it on `config/` sync folder. 
