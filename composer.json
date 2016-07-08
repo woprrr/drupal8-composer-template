@@ -46,7 +46,7 @@
   "scripts": {
     "site-install": "sh ./scripts/site-install.sh",
     "site-update": "sh ./scripts/site-update.sh",
-    "export-conf": "sh ./scripts/export-conf.sh"
+    "export-conf": "sh ./scripts/export-conf.sh",
   },
   "extra": {
     "installer-paths": {
