@@ -43,9 +43,6 @@ $DRUSH cim sync -y
 # Update entity configuration IMPORTANT to prevent missmatch of entities.
 $DRUSH entup -y
 
-# After import, Re-export configuration files to permit re-sync of configurations.
-$DRUSH cex sync -y
-
 # Maintenance OFF
 $DRUSH state-set system.maintenance_mode 0
 

@@ -39,14 +39,15 @@
     "drupal/toolbar_menu": "8.1.0",
     "drupal/admin_toolbar": "8.*",
     "drupal/pathauto": "8.1.0-alpha3",
-    "drupal/token": "8.1.*@dev"
+    "drupal/token": "8.1.*@dev",
+    "drupal/config_installer": "8.1.*"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
     "site-install": "sh ./scripts/site-install.sh",
     "site-update": "sh ./scripts/site-update.sh",
-    "export-conf": "sh ./scripts/export-conf.sh",
+    "export-conf": "sh ./scripts/export-conf.sh"
   },
   "extra": {
     "installer-paths": {

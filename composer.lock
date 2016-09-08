@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "04c21a1e8af8779d9e2204d6b3703801",
-    "content-hash": "48dd5b4e0fb647b4e4961596267b9892",
+    "hash": "44316747a529cd3101b4f3ba523487ef",
+    "content-hash": "60284af1af79f61372a340244913d80b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -791,6 +791,37 @@
             "description": "Limit which text formats are available for each field instance.",
             "homepage": "https://www.drupal.org/project/allowed_formats",
             "time": "2016-04-25 14:07:17"
+        },
+        {
+            "name": "drupal/config_installer",
+            "version": "8.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/config_installer.git",
+                "reference": "071213c9a7507bddcd6f6018d3f24217c13bb9d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_installer-8.x-1.3.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "drupal/core": "8.*"
+            },
+            "type": "drupal-profile",
+            "extra": {
+                "branch-alias": {
+                    "dev-8.x-1.x": "8.1.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.drupal-composer.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Use configuration from another Drupal site to install a Drupal instance. Suitable for advanced users.",
+            "homepage": "https://www.drupal.org/project/config_installer",
+            "time": "2016-05-05 16:43:19"
         },
         {
             "name": "drupal/console",
