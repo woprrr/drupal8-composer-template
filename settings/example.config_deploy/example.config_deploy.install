@@ -17,10 +17,4 @@ function config_deploy_install() {
       ->save();
   }
 
-  if (isset($system_site['langcode'])) {
-    \Drupal::configFactory()
-      ->getEditable('system.site')
-      ->set('langcode', $system_site['langcode'])
-      ->save();
-  }
 }

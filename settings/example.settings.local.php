@@ -2,12 +2,14 @@
 
 # Settings.
 $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
+$settings['hash_salt'] = 'YUPiSjYMM6dI0dc1pkewk73fwcfPegWlNxbfVQD_mrZG2WmuDCDMa9h2_lYbBZfXRp7GLnK8ew';
+
+# Settings NOT FOR PRODUCTION ENV.
 $settings['cache']['bins']['render'] = 'cache.backend.null';
 $settings['extension_discovery_scan_tests'] = TRUE;
 $settings['rebuild_access'] = TRUE;
 $settings['file_chmod_directory'] = 0777;
 $settings['file_chmod_file'] = 0777;
-$settings['hash_salt'] = 'YUPiSjYMM6dI0dc1pkewk73fwcfPegWlNxbfVQD_mrZG2WmuDCDMa9h2_lYbBZfXRp7GLnK8ew';
 
 # Databases.
 $databases['default']['default'] = array(
@@ -24,6 +26,8 @@ $databases['default']['default'] = array(
 
 # Config.
 $config['system.logging']['error_level'] = 'verbose';
+
+# Config NOT FOR PRODUCTION ENV.
 $config['system.performance']['css']['preprocess'] = FALSE;
 $config['system.performance']['js']['preprocess'] = FALSE;
 
@@ -31,3 +35,7 @@ $config['system.performance']['js']['preprocess'] = FALSE;
 $config_directories = array(
   CONFIG_SYNC_DIRECTORY => getcwd() . '/../config'
 );
+
+# Mendatory to tell Drupal "my_install_profile" is not a module but an install profile,
+# to prevent missmatch of configuration in CIM.
+$settings['install_profile'] = 'my_install_profile';

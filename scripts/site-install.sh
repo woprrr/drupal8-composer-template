@@ -37,6 +37,11 @@ $DRUSH site-install -y \
 # Cache rebuild.
 $DRUSH cr
 
+# UNCOMMENT ONLY IF WE USE AN LANGUAGE != en.
+# Enforce language.entity.xx uuid.
+# to prevent the atempt to remove the default language configuration.
+#$DRUSH cset language.entity."$DRUSH_INSTALL_LOCALE" uuid "UUID_OF_CONFIGURATION" -y
+
 # Import configuration files This command use the configuration of modules/profiles not `/../config/`.
 $DRUSH cim --quiet -y
 
