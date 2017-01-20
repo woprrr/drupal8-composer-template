@@ -1,0 +1,16 @@
+parameters:
+  site.parameters:
+    locale: fr
+    profile: ftvsport
+    language:
+      uuid: ''
+      locale: fr
+  admin.account:
+    name: admin
+    password: admin
+    mail: your@mail.fr
+  dev.modules:
+    - devel
+    - kint
+    - config
+    - admin_toolbar
