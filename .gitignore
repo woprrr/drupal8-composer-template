@@ -38,6 +38,7 @@ web/sites/example.settings.local.php
 web/sites/example.sites.php
 web/update.php
 web/web.config
+web/autoload.php
 
 web/core/web.config
 web/core/authorize.php
