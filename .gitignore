@@ -23,6 +23,22 @@ sites/all/README.txt
 sites/all/modules/README.txt
 sites/all/themes/README.txt
 
+# Ignore Core files provide by drupal-scaffold.
+web/.csslintrc
+web/.editorconfig
+web/.eslintignore
+web/.eslintrc
+web/.gitattributes
+web/.htaccess
+web/index.php
+web/profiles/
+web/robots.txt
+web/sites/default/
+web/sites/example.settings.local.php
+web/sites/example.sites.php
+web/update.php
+web/web.config
+
 web/core/web.config
 web/core/authorize.php
 web/core/update.php
