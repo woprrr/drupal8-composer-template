@@ -50,9 +50,10 @@ web/sites/default/settings.local.php
 web/sites/default/settings.php
 web/sites/development.services.yml
 
-settings/drush-config.sh
+settings/drush.config.yml
 settings/settings.local.php
 settings/development.services.yml
+settings/composer.*.json
 
 vendor
 web/core

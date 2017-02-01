@@ -17,34 +17,18 @@
   ],
   "require": {
     "composer/installers": "^1.2",
-    "drupal-composer/drupal-scaffold": "^2.2",
     "cweagans/composer-patches": "1.6.0",
+    "wikimedia/composer-merge-plugin": "^1.3",
+    "drupal-composer/drupal-scaffold": "^2.2",
     "drupal/core": "8.x@stable",
     "drush/drush": "8.x",
     "drupal/console": "dev-master",
     "drupal/coder": "^8.2",
     "drupal/devel": "1.x",
-    "drupal/allowed_formats": "1.x",
-    "drupal/crop": "1.x",
-    "drupal/image_widget_crop": "1.x",
-    "drupal/entity_browser": "1.x",
-    "drupal/ctools": "3.x",
     "drupal/field_group": "1.x",
     "drupal/imagick": "1.x",
-    "drupal/inline_entity_form": "1.x",
-    "drupal/toolbar_menu": "1.x",
     "drupal/admin_toolbar": "1.x",
-    "drupal/pathauto": "1.x",
-    "drupal/token": "1.x",
-    "drupal/features": "^3.2",
-    "drupal/environment_indicator": "3.x",
-    "drupal/paragraphs": "1.x-dev",
-    "drupal/paragraphs_collection": "1.x-dev",
-    "drupal/Search_api_db": "^1.0@beta",
-    "drupal/media_entity": "^1.6",
-    "drupal/libraries": "3.x",
-    "drupal/slick": "1.0-rc1",
-    "drupal/adminimal_theme": "^1.3"
+    "drupal/libraries": "3.x"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.8"
@@ -63,6 +47,11 @@
     "export-conf": "Drupal\\Composer\\Plugins\\DrupalExportConf::process"
   },
   "extra": {
+    "merge-plugin": {
+      "include": [
+        "settings/composer.local.json"
+      ]
+    },
     "patches": {},
     "installer-paths": {
       "web/core": ["type:drupal-core"],

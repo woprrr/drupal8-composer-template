@@ -8,115 +8,65 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Yaml\Yaml;
 
-class DrupalInstall
+class DrupalInstall extends DrupalHandlerBase
 {
-  public static $drush = 'vendor/bin/drush -r web';
 
   public static function process(Event $event)
   {
-    echo sprintf("\n\n#step 1. Settings : Prepare directories");
-    self::prepareDirectories($event);
+    $io = $event->getIO();
+    $step = 1;
 
-    $drush_yml = Yaml::parse(file_get_contents('settings/drush.config.yml'));
+    $io->write("#step {$step}. Settings : Prepare directories");
+    self::prepareFilesDirectories($event);
 
-    echo sprintf("\n\n#step 2. Site-install : Drupal install");
+    $dc = self::getDrushConfig(file_get_contents('settings/drush.config.yml'));
+    $step++;
 
-    $process = new Process(self::$drush . " site-install -y --account-name={$drush_yml['parameters']['admin.account']['name']} --account-pass={$drush_yml['parameters']['admin.account']['password']} --account-mail={$drush_yml['parameters']['admin.account']['mail']} --locale={$drush_yml['parameters']['site.parameters']['locale']} {$drush_yml['parameters']['site.parameters']['profile']}");
+    $io->write("#step {$step}. Site-install : Drupal install");
+
+    $process = new Process(self::$drush . " si {$dc['parameters']['site.parameters']['profile']} --site-name={$dc['parameters']['site.parameters']['name']} --account-name={$dc['parameters']['site.parameters']['admin.account']['name']} --account-pass={$dc['parameters']['site.parameters']['admin.account']['password']} --account-mail={$dc['parameters']['site.parameters']['admin.account']['mail']} --locale={$dc['parameters']['site.parameters']['locale']} -y");
     $process->setTimeout('1200');
     $process->run();
 
-    if (!$process->isSuccessful()) {
-      throw new ProcessFailedException($process);
-    }
-
     echo $process->getOutput();
+    $step++;
 
-    echo sprintf("\n\n#step 3. Site-install : Clear Caches");
+    $io->write("#step {$step}. Site-install : Clear Caches");
     $process = new Process(self::$drush . ' cr');
     $process->run();
 
     echo $process->getOutput();
+    $step++;
 
-    if (!empty($drush_yml['parameters']['site.parameters']['language']['uuid'])) {
-      echo sprintf("\n\n#step 4. Site-install : Force language uuid");
-      $process = new Process(self::$drush . " cset language.entity.{$drush_yml['parameters']['site.parameters']['language']['locale']} uuid {$drush_yml['parameters']['site.parameters']['language']['uuid']} -y");
+    if (!empty($dc['parameters']['site.parameters']['language']['uuid'])) {
+      $io->write("#step {$step}. Site-install : Force language uuid");
+      $process = new Process(self::$drush . " cset language.entity.{$dc['parameters']['site.parameters']['language']['locale']} uuid {$dc['parameters']['site.parameters']['language']['uuid']} -y");
       $process->run();
       echo $process->getOutput();
+      $step++;
     }
 
 
     if (isset($event->getArguments()[0])) {
-      echo sprintf("\n\n#step 5. Configuration : Import {$event->getArguments()[0]}.");
+      $io->write("#step {$step}. Configuration : Import {$event->getArguments()[0]}.");
       $process = new Process(self::$drush . " cim {$event->getArguments()[0]} --quiet -y");
     } else {
-      echo sprintf("\n\n#step 5. Configuration : Import default (sync).");
+      $io->write("#step {$step}. Configuration : Import default (sync).");
       $process = new Process(self::$drush . " cim --quiet -y");
     }
     $process->run();
 
     echo $process->getOutput();
+    $step++;
 
-    echo sprintf("\n\n#step 6. Dev modules : Enable developpements modules");
-    $modules = $drush_yml['parameters']['dev.modules'];
-    $module_enable_process = self::$drush . ' en ';
-    foreach ($modules as $module) {
-      $module_enable_process .= $module . ' ';
-    }
-    $process = new Process($module_enable_process . '-y');
-    $process->run();
+    $io->write("#step {$step}. Dev modules : Enable developpements modules");
 
-    echo $process->getOutput();
+    self::devModulesManager($event, 'en', $dc['parameters']['dev.modules']);
+    $step++;
 
-    echo sprintf("\n\n#step 7. settings.local permissions");
+    $io->write("#step {$step}. settings.local permissions");
     $process = new Process("chmod +w web/sites/default/settings.local.php" . '-y');
     $process->run();
   }
 
-  public static function prepareDirectories(Event $event)
-  {
-    $prepare_directories_process = new Process('cp settings/settings.php web/sites/default/settings.php');
-    $prepare_directories_process->run();
-
-    if (!$prepare_directories_process->isSuccessful()) {
-      if (!file_exists('web/sites/default/settings.php')) {
-        throw new ProcessFailedException($prepare_directories_process);
-      }
-    }
-
-    echo sprintf("\nssettings.php are correctly copied");
-
-    $prepare_directories_process = new Process('cp settings/services.yml web/sites/default/services.yml');
-    $prepare_directories_process->run();
-
-    if (!$prepare_directories_process->isSuccessful()) {
-      if (!file_exists('web/sites/default/services.yml')) {
-        throw new ProcessFailedException($prepare_directories_process);
-      }
-    }
-
-    echo sprintf("\nservices.yml are correctly copied");
-
-    $prepare_directories_process = new Process('cp settings/settings.local.php web/sites/default/settings.local.php');
-    $prepare_directories_process->run();
-
-    if (!$prepare_directories_process->isSuccessful()) {
-      if (!file_exists('web/sites/default/settings.local.php')) {
-        throw new ProcessFailedException($prepare_directories_process);
-      }
-    }
-
-    echo sprintf("\nsettings.local.php are correctly symlnc");
-
-    $prepare_directories_process = new Process('cp settings/development.services.yml web/sites/development.services.yml');
-    $prepare_directories_process->run();
-
-    if (!$prepare_directories_process->isSuccessful()) {
-      if (!file_exists('web/sites/development.services.yml')) {
-        throw new ProcessFailedException($prepare_directories_process);
-      }
-    }
-
-    echo sprintf("\ndevelopment.services.yml are correctly symlnc");
-
-  }
 }
