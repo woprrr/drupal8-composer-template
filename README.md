@@ -1,3 +1,6 @@
+##/!\ DOC Outdated /!\
+This project have totally change please contact woprrr.dev@gmail.com for the moment.
+
 # Drupal 8 Composer Install / Update
 Define an standardized architecture to install/update Drupal 8 with composer. That project is a kickstart project to install Drupal Core & Usefull modules.
 
