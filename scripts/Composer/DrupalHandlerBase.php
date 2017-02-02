@@ -3,6 +3,7 @@
 namespace Drupal\Composer\Plugins;
 
 use Composer\Script\Event;
+use Composer\IO\ConsoleIO;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
@@ -116,7 +117,7 @@ abstract class DrupalHandlerBase {
       throw new ProcessFailedException($process);
     }
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
 
     // New whitespace.
     $io->write("");
@@ -142,5 +143,19 @@ abstract class DrupalHandlerBase {
    */
   protected static function getDrupalRoot($project_root) {
     return $project_root . '/web';
+  }
+
+  /**
+   * Return correct Output return by Drush process.
+   *
+   * ATM we have a strange "bug", when drush return on the Output
+   * that is an ErrorOutput to view sucess/ok status message.
+   *
+   * @param ConsoleIO   $event
+   * @param Process                 $process
+   */
+  protected static function writeDrushOutput(ConsoleIO $io, Process $process) {
+    $io->write($process->getOutput());
+    $io->write($process->getErrorOutput());
   }
 }

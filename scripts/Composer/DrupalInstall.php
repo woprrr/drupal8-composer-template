@@ -48,7 +48,7 @@ class DrupalInstall extends DrupalHandlerBase {
       throw new ProcessFailedException($process);
     }
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
 
     // New whitespace.
@@ -62,7 +62,7 @@ class DrupalInstall extends DrupalHandlerBase {
       throw new ProcessFailedException($process);
     }
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
 
     if (!empty($dc['parameters']['site.parameters']['language']['uuid'])) {
@@ -74,7 +74,7 @@ class DrupalInstall extends DrupalHandlerBase {
         throw new ProcessFailedException($process);
       }
 
-      echo $process->getOutput();
+      self::writeDrushOutput($io, $process);
       $step++;
     }
 
@@ -90,11 +90,7 @@ class DrupalInstall extends DrupalHandlerBase {
     }
     $process->run();
 
-    if (!$process->isSuccessful()) {
-      throw new ProcessFailedException($process);
-    }
-
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
 
     // New whitespace.
@@ -106,7 +102,7 @@ class DrupalInstall extends DrupalHandlerBase {
     $step++;
 
     $io->write("<info>#step {$step}. settings.local permissions</info>");
-    $fs->chmod(self::getDrupalRoot(getcwd()) . "/sites/default/settings.local.php", "+w");
-    $io->write("* Update `<info>sites/default/settings.local.php</info>` file with `+w` right");
+    $fs->chmod(self::getDrupalRoot(getcwd()) . "/sites/default/settings.local.php", 0666);
+    $io->write("* Update `<info>sites/default/settings.local.php</info>` file with chmod 0666");
   }
 }

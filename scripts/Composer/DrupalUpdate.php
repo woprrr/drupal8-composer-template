@@ -49,7 +49,7 @@ class DrupalUpdate extends DrupalHandlerBase {
       throw new ProcessFailedException($process);
     }
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
     // New whitespace.
     $io->write("");
@@ -62,7 +62,7 @@ class DrupalUpdate extends DrupalHandlerBase {
       throw new ProcessFailedException($process);
     }
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
     // New whitespace.
     $io->write("");
@@ -76,7 +76,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     }
     $process->run();
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
     // New whitespace.
     $io->write("");
@@ -89,20 +89,20 @@ class DrupalUpdate extends DrupalHandlerBase {
       throw new ProcessFailedException($process);
     }
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
     // New whitespace.
     $io->write("");
 
     $io->write("<info>#step {$step}.</info> Mode maintenance OFF");
-    $process = new Process(self::$drush . " state-set system.maintenance_mode 1");
+    $process = new Process(self::$drush . " state-set system.maintenance_mode 0");
     $process->run();
 
     if (!$process->isSuccessful()) {
       throw new ProcessFailedException($process);
     }
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
     // New whitespace.
     $io->write("");
@@ -115,7 +115,7 @@ class DrupalUpdate extends DrupalHandlerBase {
       throw new ProcessFailedException($process);
     }
 
-    $io->write($process->getOutput());
+    self::writeDrushOutput($io, $process);
     $step++;
     // New whitespace.
     $io->write("");
@@ -123,8 +123,8 @@ class DrupalUpdate extends DrupalHandlerBase {
     self::devModulesManager($event, 'en', $dc['parameters']['dev.modules']);
 
     $io->write("<info>#step {$step}.</info> settings.local permissions");
-    $fs->chmod(self::getDrupalRoot(getcwd()) . "/sites/default/settings.local.php", "+w");
-    $io->write("* Update `<info>sites/default/settings.local.php</info>` file with `+w` right");
+    $fs->chmod(self::getDrupalRoot(getcwd()) . "/sites/default/settings.local.php", 0666);
+    $io->write("* Update `<info>sites/default/settings.local.php</info>` file with chmod 0666");
   }
 
 }
