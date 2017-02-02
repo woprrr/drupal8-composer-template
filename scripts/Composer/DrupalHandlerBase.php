@@ -35,15 +35,7 @@ abstract class DrupalHandlerBase {
     $io = $event->getIO();
     $root = static::getDrupalRoot(getcwd());
 
-    $dirs = [
-      'modules',
-      'profiles',
-      'themes',
-      'libraries',
-    ];
-
-    // Prepare correct folders to unit tests.
-    foreach ($dirs as $dir) {
+    foreach (['modules', 'profiles', 'themes', 'libraries'] as $dir) {
       if (!$fs->exists($root . '/'. $dir)) {
         $fs->mkdir($root . '/'. $dir);
         $fs->touch($root . '/'. $dir . '/.gitkeep');
@@ -51,28 +43,28 @@ abstract class DrupalHandlerBase {
     }
 
     // Prepare the settings file for installation
-    if ($fs->exists(getcwd() . '/settings/settings.php')) {
+    if (!$fs->exists($root . '/sites/default/settings.php') && $fs->exists(getcwd() . '/settings/settings.php')) {
       $fs->copy(getcwd() . '/settings/settings.php', $root . '/sites/default/settings.php');
       $fs->chmod($root . '/sites/default/settings.php', 0666);
       $io->write("* Create a `<info>sites/default/settings.php</info>` file with chmod 0666");
     }
 
-    // Prepare the settings file for installation
-    if ($fs->exists(getcwd() . '/settings/settings.local.php')) {
+    // Prepare the settings.local file for installation
+    if (!$fs->exists($root . '/sites/default/settings.local.php') && $fs->exists(getcwd() . '/settings/settings.local.php')) {
       $fs->symlink(getcwd() . '/settings/settings.local.php', $root . '/sites/default/settings.local.php');
       $fs->chmod($root . '/sites/default/settings.local.php', 0666);
       $io->write("* Symlink a `<info>sites/default/settings.local.php</info>` file with chmod 0666");
     }
 
     // Prepare the services file for installation
-    if ($fs->exists(getcwd() . '/settings/services.yml')) {
+    if (!$fs->exists($root . '/sites/default/services.yml') && $fs->exists(getcwd() . '/settings/services.yml')) {
       $fs->copy(getcwd() . '/settings/services.yml', $root . '/sites/default/services.yml');
       $fs->chmod($root . '/sites/default/services.yml', 0666);
       $io->write("* Create a `<info>sites/default/services.yml</info>` file with chmod 0666");
     }
 
-    // Prepare the settings file for installation
-    if ($fs->exists(getcwd() . '/settings/development.services.yml')) {
+    // Prepare the development.service file for installation
+    if (!$fs->exists($root . '/sites/development.services.yml') && $fs->exists(getcwd() . '/settings/development.services.yml')) {
       $fs->symlink(getcwd() . '/settings/development.services.yml', $root . '/sites/development.services.yml');
       $fs->chmod($root . '/sites/development.services.yml', 0666);
       $io->write("* Symlink a `<info>sites/development.services.yml</info>` file with chmod 0666");

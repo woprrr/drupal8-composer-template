@@ -1,69 +1,57 @@
 #Ignore file endind with map
 *.map
 
-sites/*/*settings*.php
-
-# Ignore paths that contain generated content.
-web/sites/*/files
-web/sites/*/private
-
 # Ignore PHPSTORM files.
-.idea
-.idea/*
+/.idea/
 
-# Ignore default text files
-/CHANGELOG.txt
-/COPYRIGHT.txt
-/INSTALL*.txt
-/LICENSE.txt
-/MAINTAINERS.txt
-/UPGRADE.txt
-/README.txt
-sites/all/README.txt
-sites/all/modules/README.txt
-sites/all/themes/README.txt
+/web/
 
-# Ignore Core files provide by drupal-scaffold.
-web/.csslintrc
-web/.editorconfig
-web/.eslintignore
-web/.eslintrc
-web/.gitattributes
-web/.htaccess
-web/index.php
-web/profiles/
-web/robots.txt
-web/sites/default/
-web/sites/example.settings.local.php
-web/sites/example.sites.php
-web/update.php
-web/web.config
-web/autoload.php
-
-web/core/web.config
-web/core/authorize.php
-web/core/update.php
-web/core/xmlrpc.php
-
-composer.phar
-web/sites/default/settings.local.php
-web/sites/default/settings.php
-web/sites/development.services.yml
-
+# Ignore settings local files.
 settings/drush.config.yml
 settings/settings.local.php
 settings/development.services.yml
 settings/composer.*.json
-
-vendor
-web/core
-web/modules/contrib
-web/themes/contrib
-web/profiles/contrib
-
-# Ignore Libraries API files
-libraries
-libraries/*
-
-# Ignore composer.lock file
+/vendor/
 composer.lock
+
+###                                                                          ###
+#                                                                              #
+# ------- Uncomment that if you need to add web/* files into your git. ------  #
+#                                                                              #
+###                                                                          ###
+
+#/web/core/
+#/web/modules/contrib
+#/web/themes/contrib
+#/web/profiles/contrib
+#/web/libraries/
+
+# Ignore Core files provide by drupal-scaffold.
+#web/.csslintrc
+#web/.editorconfig
+#web/.eslintignore
+#web/.eslintrc
+#web/.gitattributes
+#web/.htaccess
+#web/index.php
+#web/profiles/
+#web/robots.txt
+#/web/sites/default/
+#web/sites/example.settings.local.php
+#web/sites/example.sites.php
+#web/update.php
+#web/web.config
+#web/autoload.php
+#web/sites/development.services.yml
+
+# Ignore default text files provide by scaffold
+#/CHANGELOG.txt
+#/COPYRIGHT.txt
+#/INSTALL*.txt
+#/LICENSE.txt
+#/MAINTAINERS.txt
+#/UPGRADE.txt
+#/README.txt
+#sites/all/README.txt
+#sites/all/modules/README.txt
+#sites/all/themes/README.txt

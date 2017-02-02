@@ -40,7 +40,7 @@ class DrupalInstall extends DrupalHandlerBase {
 
     $io->write("<info>#step {$step}.</info> Drupal install : Site install");
 
-    $process = new Process(self::$drush . " si {$dc['parameters']['site.parameters']['profile']} --site-name={$dc['parameters']['site.parameters']['name']} --account-name={$dc['parameters']['site.parameters']['admin.account']['name']} --account-pass={$dc['parameters']['site.parameters']['admin.account']['password']} --account-mail={$dc['parameters']['site.parameters']['admin.account']['mail']} --locale={$dc['parameters']['site.parameters']['locale']} -y");
+    $process = new Process(self::$drush . " si {$dc['parameters']['site.parameters']['profile']} --site-name='{$dc['parameters']['site.parameters']['name']}' --account-name={$dc['parameters']['site.parameters']['admin.account']['name']} --account-pass={$dc['parameters']['site.parameters']['admin.account']['password']} --account-mail={$dc['parameters']['site.parameters']['admin.account']['mail']} --locale={$dc['parameters']['site.parameters']['locale']} -y");
     $process->setTimeout('1200');
     $process->run();
 

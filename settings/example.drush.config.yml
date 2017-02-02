@@ -13,5 +13,4 @@ parameters:
   dev.modules:
     - devel
     - kint
-    - config
     - admin_toolbar
