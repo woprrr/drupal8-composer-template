@@ -14,6 +14,9 @@ settings/composer.*.json
 /vendor/
 composer.lock
 
+# TO DELETE IF YOU WANT ADD YOUR CONFIG IN YOUR GIT REPO.
+/config/*
+
 ###                                                                          ###
 #                                                                              #
 # ------- Uncomment that if you need to add web/* files into your git. ------  #
