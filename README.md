@@ -8,6 +8,7 @@ Provide a kickstart template for Drupal 8 projects, managing your site (Dependen
 
 ### Required
 - [Composer installed]
+
 > Note : Usage of composer globally is not required you can use composer 
 
 [Composer installed]: https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx
@@ -194,14 +195,20 @@ parameters:
   site.parameters:
     profile: your_profile_name
 ```
-and edit your `settings.local.php` file like :
+**_and_** edit your `settings.local.php` file like :
 ```php
 $settings['install_profile'] = 'standard';
 ```
 to
 
 ```php
-$settings['install_profile'] = 'standard';
+$settings['install_profile'] = 'your_profile_name';
 ```
 
 You are totaly free to custom your profile except delete `your_profile_install()` function if we need to use (re)installation mode with configuration import.
+
+## FAQ
+- These project are forked to [drupal-composer/drupal-project](https://github.com/drupal-composer/drupal-project) ?
+
+No it's not, few part of these project are totally differents. These project are based on full php application, without any bash or external scripts.
+These project not have same goal of drupal-project template. I really love drupal-project template, that an amazing project and I would love to participate to this with that project !!!! That project inspire me at the begining, the architecture of folders are similar.
