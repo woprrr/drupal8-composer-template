@@ -1,6 +1,6 @@
 {
-  "name": "Drupal 8 FTVSPORT",
-  "description": "An project architecture of Drupal 8",
+  "name": "woprrr/drupal8-composer-template",
+  "description": "An complex template for Drupal 8 with composer management.",
   "type": "project",
   "license": "GPL-2.0+",
   "authors": [
