@@ -1,114 +1,166 @@
-##/!\ DOC Outdated /!\
-This project have totally change please contact woprrr.dev@gmail.com for the moment.
+Drupal 8 Composer Template
+==========================
+Provide a kickstart template for Drupal 8 projects, managing your site (Dependencies / Configuration) by [Composer].
 
-# Drupal 8 Composer Install / Update
-Define an standardized architecture to install/update Drupal 8 with composer. That project is a kickstart project to install Drupal Core & Usefull modules.
+[Composer]: https://getcomposer.org/
 
-## Prepare settings
-WARNING: This step is require before Run any Script thanks to read all instructions about Drupal developement / Drupal local settings.
+## Requirements
 
-### Drupal developement services
+### Required
+- [Composer installed]
+> Note : Usage of composer globally is not required you can use composer 
 
+[Composer installed]: https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx
+
+## Installation
+To use these template in maximum, we need to adjust the following settings/configuration by project specificities.
+### Optional features
+Copy & edit settings/example.composer.local.json file to add specific composer instructions for your Drupal projects.
+```bash
+cp settings/example.development.services.yml settings/development.services.yml
+```
+> **Note** : An example usefull example is to separate the "vital" packages to more optionals packages. To permit that
+ you can require your principal packages into `/composer.json` and your `local` or optionals packages in `/settings/composer.local.json`
+ 
+By default that kickstart assume only `/settings/composer.local.json` to define other packages to merge into `composer.json`. If you decide to use it customize it **before** fire `composer install` command.
+ 
+> **Important** : You can define other configuration / files to decouple more your packages or change location on `/composer.json` file at `extra` properties @see at the bottom to customize. 
+ That functionality are an implementation to another composer plugin [wikimedia/composer-merge-plugin] visite the project page to customize your template.
+ 
+[wikimedia/composer-merge-plugin]: https://github.com/wikimedia/composer-merge-plugin
+
+### Prepare settings {#project-settings}
+> **Important** : This step is require before command `site-install` or `site-update`.
+
+#### Drupal developement services
 Copy & edit settings/example.development.services.yml file to override Drupal services parameters like cache backend, twig options
 ```bash
 cp settings/example.development.services.yml settings/development.services.yml
 ```
+This file is used to add aditional settings (only for development) to default service.yml. This is verry usefull to add options only for one specific user.
 
-### Drupal local settings
-
+#### Drupal local settings.local
 Copy & edit settings/example.settings.local.php file to add your custom configurations, database access , or specific variables has your Drupal instance.
 
 ```bash
 cp settings/example.settings.local.php settings/settings.local.php
 ```
+That functionality are added by this kickstart, that permit to add an custom settings which can vary from one configuration to another. That can be usefull to 
+arround the problems of security problems when you define production database access in `settings.php` default file.
 
-### Drush site install / update parameters
+> **Important** : That file `settings.local.php` are already included for you in `settings.php` file. You should customize `settings.php` only for add generic configuration about our each instances.
 
-Copy & edit settings/example.drush-config.sh file to configure your Drupal instance informations.
+### Drush config YAML
+
+Copy & edit settings/example.drush.config.yml file to configure your Drupal instance informations.
 ```bash
-cp settings/example.drush-config.sh settings/drush-config.sh
+cp settings/example.drush.config.yml settings/drush-config.yml
 ```
 
-That variables are used by drush during installation process.
+That file are the most important file to permit an correct management of your Drupal configuration Exporting/Importing. All informations in that file are user,
+in background by few process (`drush`) and permit to that template to manage your instance for you. 
 
-  - DRUSH_INSTALL_ACCOUNT_NAME : User name for the administrator 
-  - DRUSH_INSTALL_ACCOUNT_PASS : Administrator password
-  - DRUSH_INSTALL_ACCOUNT_MAIL : Administrator mail
-  - DRUSH_INSTALL_LOCALE : Default language
-  - DRUSH_INSTALL_PROFILE : Installation profile name
-  - DRUSH_LOCAL_MODULES : Additional modules you want to install after Drupal installation
+That parameters are used by `drush` process during installation/Update/Export process.
 
+#### site.parameters
+> Note : All of theses variables are used by drupal configuration management.
+- **name**: That represent the name of your site by default (that can be overide by your eventuals configuration imports)
+- **locale**: Important : variable, that permit to build an instance of drupal on specific language. IF ISN'T (`en`) YOU DO SPECIFY THE FOLLOWING ENTRY (`language`).
+- **profile**: Important : Name of install **profile** you need to use. That is used only on `re-install` mode. That permit to syncronize your imported configuration with another active configuration by `enforcing system.site['uuid']`.
+- **language**: Important If you use another language to `en` you should specify the `uuid` and `locale` of configuration you expect to import. If you export your configuration and not,
+ specify `uuid` correctly your import fail because configuration manager can't delete the default language to import your configuration. You need to set the future uuid of language,
+  to tell Drupal your configuration aren't an new language but the same.
+- **admin.account**: Important : That is your futur administrator `username` / `password` / `mail`.
 
-## Run installation
+#### dev.modules
+> Note : This entry are your additional modules you want to install but you don't want export her configuration. By example developpements modules `devel` are not desired on production,
+ but for your developpers that are USEFULL, if we export her configuration with `composer export-conf` command you have an unused configuration for devel.
 
-After cloning the file we can install all modules listed into composer.json file for install all dependencies of your project.
-To tell composer install all modules needed execute that command :
+### Custom installation profile (example.config_deploy)
+Copy & edit settings/example.config_deploy folder to use the re-install feature of Configuration Management. 
+
+> **IMPORTANT** : That permit to import an specific configuration on a fresh instance of Drupal. When you use `composer site-install <configuration_name>` you drop the database and re-install a new Drupal instance. For permit you to import your old/new configuration store in `/config/*` you need to read your imported configuration and force `system.site.uuid` to permit to import your entire configuration.
 ```bash
-composer install
+cp settings/example.config_deploy web/profiles/custom/your_profile_name
+mv web/profiles/custom/your_profile_name/example.config_deploy.info.yml web/profiles/custom/your_profile_name/your_profile_name.info.yml
+mv web/profiles/custom/your_profile_name/example.config_deploy.install web/profiles/custom/your_profile_name/your_profile_name.install
+vim web/profiles/custom/your_profile_name/your_profile_name.install #(AND EDIT NAME OF function _install (`your_profile_name_install`))#
 ```
+Before using that new profile your need to edit two files to tell Drupal your profiles to be used.
+- settings.local.php : By editing (`$settings['install_profile'] = 'your_profile_name';`)
+- drush.config.yml : By editing (`profile: your_profile_name`)
 
-After installation your Drupal & contributor modules are correctly download and present in web/ folder. If you have correctly configure your project @see `settings/examples.*` files.
+Enjoy you can play with `composer site-install` again and again withou loose your configurations :).
+
+## Usage
+
+After cloning/download the project files and adjust `/settings/*` files to your local. Add your projects into `composer.json` or/and `/settings/composer.local.json` file(s) following composer syntax.
+> Example : Add `"drupal/image_widget_crop": "1.x"` line into `"require": {}` part. Note that if we have already fired `composer install` you have another way to add projects in your `composer.json` file.
+
+When all is ready download and generate all Drupal project files with the following command :
+```bash
+composer install your_config_name_to_import
+```
+Important : These command allow to import an specific configuration during import process, eg: you need to import your `prod` configuration store in `/config/prod/*` you should use `composer site-install prod` command.
+ If we not specify Drupal configuration import `CONFIG_SYNC_DIRECTORY` (sync).
+ 
+> Note : If we need to specify other configuration export/import folder use your `setting.local.php` to define it like the following code.
+```php
+# Config directories
+$config_directories = array(
+  CONFIG_SYNC_DIRECTORY => getcwd() . '/../config',
+  config1 => getcwd() . '/../config/config1',
+  config2 => getcwd() . '/../config/config2',
+  prod => getcwd() . '/../config/prod'
+);
+```
+@see more at [Drupal.org documentation](https://www.drupal.org/docs/8/configuration-management/changing-the-storage-location-of-the-sync-directory)
+
+After installation your Drupal Core, contributor modules, libraries, packages are correctly download and present in `web/*` folder. 
+
+> Note : All Drupal packages are already move into `/web/*` eg: Drupal modules are placed in `/web/modules/contrib` etc...
+
+If you have already correctly configure your project [settings](#project-settings) _**you can use the following commands**_.
+
+### First installation
+
+To install your Drupal instance, you just need to use the following command :
 ```bash
 composer site-install
 ```
 
-The composer site-install run `/../scripts/site-install.sh` file and execute all commands needed to (re)install an fresh Drupal 8 instance.
-WARNING : If you re-execute this script after an installation without configuration export to export your changes, any changes will be lost !
+The `composer site-install` install a new fresh instance of Drupal 8 for you.
 
-### Re-Run Complete installation
-To re-install your instance with new configuration or after an `composer export-conf` you do have an special profile to use this mode.
-You have an example profile available in `settings/example.config_deploy/*` you can copy / paste this folder into `/web/profiles/custom/` folder.
+> WARNING : If you re-execute this command on existing instance, without exported configuration configured and files into your `/config/*` folder to export your changes, all you changes are lost ! 
+Because `drush site-install` process drop all tables before (re)install a new instance.
 
-After copy/paste you can rename your install profile and edit it but you NEED yo preserve that function onto `your_profile/your_profile.install`
-```php
-function your_profile_install() {
+### Exporting active configuration
 
-  $config_sync_directorie = $GLOBALS['config_directories']['sync'];
+That specificity of these template are that CRITICAL feature. With composer you can export/import all your Drupal configuration easily with one command. For last version you can specify too what configuration you need to export/import to an better configuration workflow usage.
 
-  $file_storage = new \Drupal\Core\Config\FileStorage($config_sync_directorie);
+After you install you site and customize in UI, you need to export for few reasons your Drupal configuration. These exported configuration can be usefull to deploy your change in your stage instance. (By example Like Feature in Drupal 7)
 
-  $system_site = $file_storage->read('system.site');
-  if (isset($system_site['uuid'])) {
-    \Drupal::configFactory()
-      ->getEditable('system.site')
-      ->set('uuid', $system_site['uuid'])
-      ->save();
-  }
+To understand more CMI you can read theses amazing articles 
+[English](https://www.amazeelabs.com/en/blog/team-development-drupal-8-configuration-management) or 
+[French](https://happyculture.coop/blog/drupal-8-gestion-configuration-cmi)
 
-}
-```
+### Run update
 
-That function permit to preserve your previous system.site uuid and set it on your new instance. That method is similar to [Config Installer]: https://www.drupal.org/project/config_installer and discuss with @Alexpot.
-
-After that profile correctly configured you can edit `settings/drush-config.sh` and change that line :
-
+To update your code or applie your exported configuration without complete (re)install, you should use site-update command.
 ```bash
-# If you have an specific profile to install your site define here.
-export DRUSH_INSTALL_PROFILE="config_deploy"
-```
-to
-
-```bash
-# If you have an specific profile to install your site define here.
-export DRUSH_INSTALL_PROFILE="your_profile"
+composer site-update your_config_name_to_import
 ```
 
-You are totaly free to custom your profile except delete `your_profile_install()` function.
+> Note : That command execute for you usuals drush commands (updb, entup, config-import). 
 
-## Run update
-
-If you have already an active Drupal 8 instance you can run update script.
-```bash
-composer site-update
-```
-
-During the update site-update script re-syncronize all configurations of `CONFIG_SYNC_DIRECTORY` folder (by default /../config).
+### Add new packages Drupal-modules
+Like normal way to add packages in composer you should use the command `composer require drupal/module_machine_name`. For more explanations @see [Drupal.org documentation](https://www.drupal.org/node/2718229)
 
 ### Update project modules
 
-To process an modules update with update script you need to edit your composer.json file and modify version of existing module. After modification of composer.json file you can use the common command
+To process an modules update with update script you need to edit your composer.json file and modify version of existing module. After modifications of `composer.json` or `composer.local.json file` you can use the common command
 ```bash
-composer update <package_name>
+composer update drupal/module_machine_name
 ```
 
 By example for update drupal core version with that method
@@ -116,13 +168,40 @@ By example for update drupal core version with that method
 composer update drupal/core
 ```
 
-Now to apply your changes you can run site-update scripts to applies configurations upadates.
+If we need to directly enable your module in your site you can edit `core.extensions.yml` file and add your module name to active modules. To tell Drupal configuration system this changes you need to use the following command.
 ```bash
-composer site-update
+composer site-update your_config_name_to_import
 ```
 
-### General questions
+> Note : We can just add your package and enable your module in UI to export your changes after via `composer export-conf your_config_name_to_import` command.
 
-- After install my profile all actions tabs / local tabs are missing ?
--- Yes ! particulary if you use Bartik / Seven on Default / admin theme. You must install correct blocks in regions to add it. 
-For solve it go to `web/core/profile/standard/config` and copy all blocks prefixed by 'block.block.bartik_*' & 'block.block.seven_*' and paste it on `config/` sync folder. 
+### Re-Run Complete installation
+To re-install your instance with new configuration or after an `composer export-conf` you do have an special profile to use this mode.
+See previous part of these `Custom installation profile`?.
+That method is similar to [Config Installer]: https://www.drupal.org/project/config_installer and discuss with @Alexpot.
+
+After that profile correctly configured you can edit `settings/drush.config.yml` and change that line :
+
+```YAML
+parameters:
+  site.parameters:
+    profile: standard
+```
+to
+
+```YAML
+parameters:
+  site.parameters:
+    profile: your_profile_name
+```
+and edit your `settings.local.php` file like :
+```php
+$settings['install_profile'] = 'standard';
+```
+to
+
+```php
+$settings['install_profile'] = 'standard';
+```
+
+You are totaly free to custom your profile except delete `your_profile_install()` function if we need to use (re)installation mode with configuration import.
