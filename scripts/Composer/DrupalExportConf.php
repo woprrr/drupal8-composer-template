@@ -33,10 +33,10 @@ class DrupalExportConf extends DrupalHandlerBase {
 
     if (isset($event->getArguments()[0])) {
       $io->write("<comment>#step {$step}.</comment> Configuration : <info>Exporting <warning>{$event->getArguments()[0]}</warning></info>.");
-      $process = new Process(self::$drush . " cex {$event->getArguments()[0]} -y");
+      $process = new Process(self::drush() . " cex {$event->getArguments()[0]} -y");
     } else {
       $io->write("<comment>#step {$step}.</comment> Configuration : <info>Exporting default (<warning>sync</warning>)</info>.");
-      $process = new Process(self::$drush . " cex -y");
+      $process = new Process(self::drush() . " cex -y");
     }
     $process->run();
 

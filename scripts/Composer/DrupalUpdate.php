@@ -42,7 +42,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     $io->write("");
 
     $io->write("<info>#step {$step}.</info> Mode maintenance ON");
-    $process = new Process(self::$drush . " state-set system.maintenance_mode 1");
+    $process = new Process(self::drush() . " state-set system.maintenance_mode 1");
     $process->run();
 
     if (!$process->isSuccessful()) {
@@ -55,7 +55,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     $io->write("");
 
     $io->write("<info>#step {$step}.</info> Drupal Update");
-    $process = new Process(self::$drush . " updb -y");
+    $process = new Process(self::drush() . " updb -y");
     $process->run();
 
     if (!$process->isSuccessful()) {
@@ -69,10 +69,10 @@ class DrupalUpdate extends DrupalHandlerBase {
 
     if (isset($event->getArguments()[0])) {
       $io->write("<info>#step {$step}.</info> Configuration : Update {$event->getArguments()[0]}.");
-      $process = new Process(self::$drush . " cim {$event->getArguments()[0]} --quiet -y");
+      $process = new Process(self::drush() . " cim {$event->getArguments()[0]} --quiet -y");
     } else {
       $io->write("<info>#step {$step}.</info> Configuration : Import default (sync).");
-      $process = new Process(self::$drush . " cim --quiet -y");
+      $process = new Process(self::drush() . " cim --quiet -y");
     }
     $process->run();
 
@@ -82,7 +82,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     $io->write("");
 
     $io->write("<info>#step {$step}.</info> Drupal Entity update");
-    $process = new Process(self::$drush . " entup -y");
+    $process = new Process(self::drush() . " entup -y");
     $process->run();
 
     if (!$process->isSuccessful()) {
@@ -95,7 +95,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     $io->write("");
 
     $io->write("<info>#step {$step}.</info> Mode maintenance OFF");
-    $process = new Process(self::$drush . " state-set system.maintenance_mode 0");
+    $process = new Process(self::drush() . " state-set system.maintenance_mode 0");
     $process->run();
 
     if (!$process->isSuccessful()) {
@@ -108,7 +108,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     $io->write("");
 
     $io->write("<info>#step {$step}.</info> Clear Caches");
-    $process = new Process(self::$drush . ' cr');
+    $process = new Process(self::drush() . ' cr');
     $process->run();
 
     if (!$process->isSuccessful()) {
@@ -123,7 +123,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     self::devModulesManager($event, 'en', $dc['parameters']['dev.modules']);
 
     $io->write("<info>#step {$step}.</info> settings.local permissions");
-    $fs->chmod(self::getDrupalRoot(getcwd()) . "/sites/default/settings.local.php", 0666);
+    $fs->chmod(self::getDrupalRootFolder(getcwd()) . "/sites/default/settings.local.php", 0666);
     $io->write("* Update `<info>sites/default/settings.local.php</info>` file with chmod 0666");
   }
 

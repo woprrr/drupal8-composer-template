@@ -21,7 +21,7 @@ abstract class DrupalHandlerBase {
    *
    * @var string $drush
    */
-  public static $drush = 'vendor/bin/drush -r web';
+  public static $drush = 'vendor/bin/drush';
 
   /**
    * Before running install/update
@@ -33,7 +33,7 @@ abstract class DrupalHandlerBase {
   public static function prepareFilesDirectories(Event $event) {
     $fs = new Filesystem();
     $io = $event->getIO();
-    $root = static::getDrupalRoot(getcwd());
+    $root = static::getDrupalRootFolder(getcwd());
 
     foreach (['modules', 'profiles', 'themes', 'libraries'] as $dir) {
       if (!$fs->exists($root . '/'. $dir)) {
@@ -98,7 +98,7 @@ abstract class DrupalHandlerBase {
       $io->write("<comment>Dev modules : Enable developpements modules.</comment>");
     }
 
-    $module_enable_process = self::$drush . " {$op} ";
+    $module_enable_process = self::drush() . " {$op} ";
     foreach ($modules as $module) {
       $module_enable_process .= $module . ' ';
     }
@@ -133,8 +133,19 @@ abstract class DrupalHandlerBase {
    *
    * @return string The Drupal ROOT path.
    */
-  protected static function getDrupalRoot($project_root) {
+  protected static function getDrupalRootFolder($project_root) {
     return $project_root . '/web';
+  }
+
+  /**
+   * Helper to use drush with root.
+   *
+   * @param string $project_root The current working directory.
+   *
+   * @return string The Drupal ROOT path.
+   */
+  protected static function drush() {
+    return self::$drush . ' --root="' . getcwd() . '/web"';
   }
 
   /**
