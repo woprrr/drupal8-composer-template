@@ -35,7 +35,3 @@ $config['system.performance']['js']['preprocess'] = FALSE;
 $config_directories = array(
   CONFIG_SYNC_DIRECTORY => getcwd() . '/../config'
 );
-
-# Mendatory to tell Drupal "my_install_profile" is not a module but an install profile,
-# to prevent missmatch of configuration in CIM.
-$settings['install_profile'] = 'my_install_profile';

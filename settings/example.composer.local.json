@@ -2,10 +2,6 @@
   "require": {
     "drupal/bootstrap": "^3.1",
     "drupal/allowed_formats": "1.x",
-    "drupal/crop": "1.x",
-    "drupal/image_widget_crop": "1.x",
-    "drupal/entity_browser": "1.x",
-    "drupal/ctools": "3.x",
     "drupal/inline_entity_form": "1.x",
     "drupal/toolbar_menu": "1.x",
     "drupal/pathauto": "1.x",
@@ -14,11 +10,9 @@
     "drupal/environment_indicator": "3.x",
     "drupal/paragraphs": "1.x-dev",
     "drupal/paragraphs_collection": "1.x-dev",
-    "drupal/Search_api_db": "^1.0@beta",
-    "drupal/media_entity": "^1.6",
     "drupal/slick": "1.0-rc1",
     "drupal/adminimal_theme": "^1.3",
-    "drupal/media_entity_image": "^1.2",
-    "drupal/file_entity": "^2.0@beta"
+    "drupal/dropzonejs": "^1.0@alpha",
+    "drupal/ctools": "^3.0@alpha"
   }
 }

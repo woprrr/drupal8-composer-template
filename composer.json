@@ -18,10 +18,10 @@
   "require": {
     "composer/installers": "^1.2",
     "cweagans/composer-patches": "1.6.0",
-    "wikimedia/composer-merge-plugin": "^1.3",
     "drupal-composer/drupal-scaffold": "^2.2",
-    "drupal/core": "8.x@stable",
-    "drush/drush": "8.x",
+    "wikimedia/composer-merge-plugin": "^1.3",
+    "drupal/core": "8.4.x",
+    "drush/drush": "~9",
     "drupal/console": "dev-master",
     "drupal/coder": "^8.2",
     "drupal/devel": "1.x",
@@ -31,7 +31,15 @@
     "drupal/libraries": "3.x"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.8"
+    "behat/mink": "1.7.x-dev",
+    "behat/mink-goutte-driver": "~1.2",
+    "drupal/coder": "8.2.12",
+    "jcalderonzumba/gastonjs": "~1.0.2",
+    "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
+    "mikey179/vfsStream": "~1.2",
+    "phpunit/phpunit": ">=4.8.28 <5",
+    "symfony/browser-kit": ">=2.8.13 <3.0",
+    "symfony/css-selector": "~2.8"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -58,7 +66,7 @@
       "web/modules/contrib/{$name}": ["type:drupal-module"],
       "web/profiles/contrib/{$name}": ["type:drupal-profile"],
       "web/themes/contrib/{$name}": ["type:drupal-theme"],
-      "web/libraries/{$name}": ["type:drupal-library"],
+      "web/libraries/{$name}": ["type:drupal-library", "type:library"],
       "drush/contrib/{$name}": ["type:drupal-drush"]
     },
     "bin-dir": "bin"
