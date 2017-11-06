@@ -12,6 +12,7 @@ settings/settings.local.php
 settings/development.services.yml
 settings/composer.*.json
 /vendor/
+/bin/
 composer.lock
 
 # TO DELETE IF YOU WANT ADD YOUR CONFIG IN YOUR GIT REPO.

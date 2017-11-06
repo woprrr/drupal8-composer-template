@@ -21,7 +21,7 @@ abstract class DrupalHandlerBase {
    *
    * @var string $drush
    */
-  public static $drush = 'vendor/bin/drush';
+  public static $drush = 'bin/drush';
 
   /**
    * Before running install/update
