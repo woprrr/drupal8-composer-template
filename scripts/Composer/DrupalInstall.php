@@ -32,7 +32,9 @@ class DrupalInstall extends DrupalHandlerBase {
     $io->write("<info>#step {$step}.</info> Settings : Prepare directories");
     self::prepareFilesDirectories($event);
 
-    $dc = self::getDrushConfig(file_get_contents('settings/drush.config.yml'));
+    $params = self::getDrushConfig(file_get_contents('app/Drupal/config/parameters.yml'));
+    $site_params = $params['parameters'];
+    $dev_modules = $params['parameters']['dev.modules'];
     $step++;
 
     // New whitespace.
@@ -40,7 +42,7 @@ class DrupalInstall extends DrupalHandlerBase {
 
     $io->write("<info>#step {$step}.</info> Drupal install : Site install");
 
-    $process = new Process(self::drush() . " si {$dc['parameters']['site.parameters']['profile']} --site-name='{$dc['parameters']['site.parameters']['name']}' --account-name={$dc['parameters']['site.parameters']['admin.account']['name']} --account-pass={$dc['parameters']['site.parameters']['admin.account']['password']} --account-mail={$dc['parameters']['site.parameters']['admin.account']['mail']} --locale={$dc['parameters']['site.parameters']['locale']} -y");
+    $process = new Process(self::drush() . " si {$site_params['site.profile']} --site-name='{$site_params['site.name']}' --account-name={$site_params['admin.account.name']} --account-pass={$site_params['admin.account.password']} --account-mail={$site_params['admin.account.mail']} --locale={$site_params['site.language.locale']} -y");
     $process->setTimeout('1200');
     $process->run();
 
@@ -65,9 +67,9 @@ class DrupalInstall extends DrupalHandlerBase {
     self::writeDrushOutput($io, $process);
     $step++;
 
-    if (!empty($dc['parameters']['site.parameters']['language']['uuid'])) {
+    if (!empty($site_params['site.language.uuid'])) {
       $io->write("<info>#step {$step}.</info> Drupal install : Force language uuid");
-      $process = new Process(self::drush() . " cset language.entity.{$dc['parameters']['site.parameters']['language']['locale']} uuid {$dc['parameters']['site.parameters']['language']['uuid']} -y");
+      $process = new Process(self::drush() . " cset language.entity.{$site_params['site.language.locale']} uuid {$site_params['site.language.uuid']} -y");
       $process->run();
 
       if (!$process->isSuccessful()) {
@@ -98,7 +100,7 @@ class DrupalInstall extends DrupalHandlerBase {
 
     $io->write("<info>#step {$step}.</info> Dev modules : Enable developpements modules.");
 
-    self::devModulesManager($event, 'en', $dc['parameters']['dev.modules']);
+    self::devModulesManager($event, 'en', $dev_modules);
     $step++;
 
     $io->write("<info>#step {$step}. settings.local permissions</info>");

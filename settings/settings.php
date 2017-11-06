@@ -782,4 +782,3 @@ $settings['entity_update_batch_size'] = 50;
 if (file_exists(__DIR__ . '/settings.local.php')) {
   include __DIR__ . '/settings.local.php';
 }
-

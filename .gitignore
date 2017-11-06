@@ -7,10 +7,9 @@
 /web/
 
 # Ignore settings local files.
-settings/drush.config.yml
+app/Drupal/config/parameters.yml
 settings/settings.local.php
 settings/development.services.yml
-settings/composer.*.json
 /vendor/
 /bin/
 composer.lock
