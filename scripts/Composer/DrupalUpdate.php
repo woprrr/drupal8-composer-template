@@ -33,9 +33,10 @@ class DrupalUpdate extends DrupalHandlerBase {
     $io->write("<info>#step {$step}.</info> Settings : Prepare directories");
     self::prepareFilesDirectories($event);
 
-    $dc = Yaml::parse(file_get_contents('settings/drush.config.yml'));
+    $params = self::getDrushConfig(file_get_contents('app/Drupal/config/parameters.yml'));
+    $dev_modules = $params['parameters']['dev.modules'];
 
-    self::devModulesManager($event, 'pm-uninstall', $dc['parameters']['dev.modules']);
+    self::devModulesManager($event, 'pm-uninstall', $dev_modules);
     $step++;
 
     // New whitespace.
@@ -120,7 +121,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     // New whitespace.
     $io->write("");
 
-    self::devModulesManager($event, 'en', $dc['parameters']['dev.modules']);
+    self::devModulesManager($event, 'en', $dev_modules);
 
     $io->write("<info>#step {$step}.</info> settings.local permissions");
     $fs->chmod(self::getDrupalRootFolder(getcwd()) . "/sites/default/settings.local.php", 0666);
