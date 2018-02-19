@@ -27,7 +27,7 @@
     "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
     "phpunit/phpunit": ">=4.8.28 <5",
     "symfony/browser-kit": ">=2.8.13 <3.0",
-    "drush/drush": "9.*",
+    "drush/drush": "8.*",
     "drupal/coder": "~8.2.0",
     "phing/phing": "^2.14",
     "drupal/devel": "^1.0",
