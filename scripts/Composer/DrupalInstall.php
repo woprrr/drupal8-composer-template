@@ -41,8 +41,17 @@ class DrupalInstall extends DrupalHandlerBase {
     $io->write("");
 
     $io->write("<info>#step {$step}.</info> Drupal install : Site install");
+    // Now we need to change permission of this file before re-install.
+    $fs = new Filesystem();
+    $fs->chmod(static::getDrupalRootFolder(getcwd()) . '/sites/default/settings.php', 0666);
 
-    $process = new Process(self::drush() . " si {$site_params['site.profile']} --site-name='{$site_params['site.name']}' --account-name={$site_params['admin.account.name']} --account-pass={$site_params['admin.account.password']} --account-mail={$site_params['admin.account.mail']} --locale={$site_params['site.language.locale']} -y");
+    // @TODO Some parameters fails with Drush 9 and config install we are,
+    // mandatory to use config_installer_site_configure_form.account.* to,
+    // re-install properly.
+    $process = new Process(self::drush() . " si {$site_params['site.profile']} --site-name='{$site_params['site.name']}' --account-name={$site_params['admin.account.name']} --account-pass={$site_params['admin.account.password']} --account-mail={$site_params['admin.account.mail']} --locale={$site_params['site.language.locale']} -y config_installer_site_configure_form.account.name={$site_params['admin.account.name']} \
+config_installer_site_configure_form.account.pass.pass1={$site_params['admin.account.password']} \
+config_installer_site_configure_form.account.pass.pass2={$site_params['admin.account.password']} \
+config_installer_site_configure_form.account.mail={$site_params['admin.account.mail']}");
     $process->setTimeout('1200');
     $process->run();
 
@@ -83,6 +92,7 @@ class DrupalInstall extends DrupalHandlerBase {
     // New whitespace.
     $io->write("");
 
+    $process->run();
     if (isset($event->getArguments()[0])) {
       $io->write("<info>#step {$step}.</info> Drupal Configuration : Import {$event->getArguments()[0]}.");
       $process = new Process(self::drush() . " cim {$event->getArguments()[0]} --quiet -y");

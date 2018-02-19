@@ -19,8 +19,8 @@
     "cweagans/composer-patches": "1.6.0",
     "drupal-composer/drupal-scaffold": "^2.2",
     "fxp/composer-asset-plugin": "^1.4",
-    "wikimedia/composer-merge-plugin": "^1.3",
-    "incenteev/composer-parameter-handler": "~2.0"
+    "incenteev/composer-parameter-handler": "~2.0",
+    "wikimedia/composer-merge-plugin": "^1.3"
   },
   "require-dev": {
     "drupal-composer/drupal-scaffold": "^2.1.0"
