@@ -6,7 +6,7 @@
     }
   },
   "require": {
-    "drupal/core": "^8.4.4",
+    "drupal/core": "8.*",
     "drupal/console": "^1.0.1"
   },
   "require-dev": {
@@ -41,24 +41,12 @@
   "extra": {
     "patches": {
       "drupal/core": {
-        "1356276 - Allow profiles to provide a base/parent profile and load them in the correct order":
-        "https://www.drupal.org/files/issues/1356276-408--8.4.4.patch",
         "2880374 - Experimental modules should not have warnings after being installed":
         "https://www.drupal.org/files/issues/2880374-remove-experimental-warnings-6.patch",
         "2869592 - Disabled update module shouldn't produce a status report warning":
         "https://www.drupal.org/files/issues/2869592-remove-update-warning-7.patch",
         "2885441 - EntityReferenceAutocompleteWidget should define its size setting as an integer":
-        "https://www.drupal.org/files/issues/2885441-2.patch",
-        "2862041 - Provide useful Views filters for Content Moderation State fields":
-        "https://www.drupal.org/files/issues/2862041-229.patch",
-        "2815221 - Add quickedit to the latest-revision route":
-        "https://www.drupal.org/files/issues/2815221-69-8.4.x.patch"
-      },
-      "drupal/config_installer": {
-        "2916090 - Support Drush 9":
-        "https://www.drupal.org/files/issues/drush9-support-2916090-6.patch",
-        "2935426 - Drush 9: Call to undefined function drush_generate_password":
-        "https://www.drupal.org/files/issues/config_installer-drush_9_call_undefined_function_drush_generate_password-2935426-2.patch"
+        "https://www.drupal.org/files/issues/2885441-2.patch"
       }
     }
   }
