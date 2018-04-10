@@ -1,0 +1,14 @@
+parameters:
+    site.name: 'Your Website Name'
+    site.locale: en
+    # In re-install mode you need to install as standard ONLY FOR FIRST INSTALL, after you does use config_installer.
+    site.profile: standard
+    admin.account.name: admin
+    admin.account.password: admin
+    admin.account.mail: your@mail.fr
+    site.language.uuid: ''
+    site.language.locale: en
+    dev.modules:
+        - devel
+        - kint
+        - admin_toolbar
