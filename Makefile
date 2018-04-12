@@ -24,7 +24,7 @@ help:
 	@echo "  test                Test application"
 
 init:
-	@$(shell cp -n $(shell pwd)/web/app/composer.json.dist $(shell pwd)/web/app/composer.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/web/composer.json.dist $(shell pwd)/web/app/composer.json 2> /dev/null)
 
 apidoc:
 	@docker-compose exec -T php php -d memory_limit=256M -d xdebug.profiler_enable=0 ./app/vendor/bin/apigen generate app/src --destination app/doc
@@ -33,18 +33,27 @@ apidoc:
 clean:
 	@rm -Rf data/db/mysql/*
 	@rm -Rf $(MYSQL_DUMPS_DIR)/*
-	@rm -Rf web/app/vendor
-	@rm -Rf web/app/composer.lock
-	@rm -Rf web/app/doc
-	@rm -Rf web/app/report
+	@rm -Rf vendor/
+	@rm -Rf composer.lock
+	@rm -Rf report
+	@rm -Rf web/
 	@rm -Rf etc/ssl/*
 
 code-sniff:
 	@echo "Checking the standard code..."
 	@docker-compose exec -T php ./app/vendor/bin/phpcs -v --standard=PSR2 app/src
 
-composer-up:
-	@docker run --rm -v $(shell pwd)/web/app:/app composer update
+c-up:
+	@docker-compose exec -T php composer update
+
+c-install:
+	@docker-compose exec -T php composer install
+
+drupal-si:
+	@docker-compose exec -T php composer site-install
+
+drupal-update:
+	@docker-compose exec -T php composer site-update
 
 docker-start: init
 	docker-compose up -d

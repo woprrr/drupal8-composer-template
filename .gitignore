@@ -2,27 +2,27 @@
 *.map
 
 # Application
-web/app/composer.lock
-web/app/vendor/
-web/app/doc/
-web/app/report/
-data/
+composer.lock
+vendor/
+doc/
+report/
+/data/
 
 # Ignore PHPSTORM files.
 /.idea/
 
-/web/public/
+/web/
 
 # Ignore settings local files.
-/web/app/Drupal/parameters.yml
-/web/app/Drupal/settings/settings.local.php
-/web/app/Drupal/settings/development.services.yml
-/web/app/vendor/
-/web/app/bin/
-/web/app/composer.lock
+app/Drupal/parameters.yml
+settings/settings.local.php
+settings/development.services.yml
+vendor/
+bin/
+composer.lock
 
 # TO DELETE IF YOU WANT ADD YOUR CONFIG IN YOUR GIT REPO.
-web/app/Drupal/config/*
+config/*
 
 ###                                                                          ###
 #                                                                              #
@@ -30,38 +30,38 @@ web/app/Drupal/config/*
 #                                                                              #
 ###                                                                          ###
 
-#/web/public/public/core/
-#/web/public/modules/contrib
-#/web/public/themes/contrib
-#/web/public/profiles/contrib
-#/web/public/libraries/
+#/web/core/
+#/web/modules/contrib
+#/web/themes/contrib
+#/web/profiles/contrib
+#/web/libraries/
 
 # Ignore Core files provide by drupal-scaffold.
-#/web/public/csslintrc
-#/web/public/.editorconfig
-#/web/public/.eslintignore
-#/web/public/.eslintrc
-#/web/public/.gitattributes
-#/web/public/.htaccess
-#web/public/index.php
-#web/public/profiles/
-#web/public/robots.txt
-#/web/public/public/sites/default/
-#web/public/sites/example.settings.local.php
-#web/public/sites/example.sites.php
-#web/public/update.php
-#web/public/web.config
-#web/public/autoload.php
-#web/public/sites/development.services.yml
+#/web/.csslintrc
+#/web/.editorconfig
+#/web/.eslintignore
+#/web/.eslintrc
+#/web/.gitattributes
+#/web/.htaccess
+#web/index.php
+#web/profiles/
+#web/robots.txt
+#/web/sites/default/
+#web/sites/example.settings.local.php
+#web/sites/example.sites.php
+#web/update.php
+#web/web.config
+#web/autoload.php
+#web/sites/development.services.yml
 
 # Ignore default text files provide by scaffold
-#/web/public/CHANGELOG.txt
-#/web/public/COPYRIGHT.txt
-#/web/public/INSTALL*.txt
-#/web/public/LICENSE.txt
-#/web/public/MAINTAINERS.txt
-#/web/public/UPGRADE.txt
-#/web/public/README.txt
-#/web/public/sites/all/README.txt
-#/web/public/sites/all/modules/README.txt
-#/web/public/sites/all/themes/README.txt
+#/web/CHANGELOG.txt
+#/web/COPYRIGHT.txt
+#/web/INSTALL*.txt
+#/web/LICENSE.txt
+#/web/MAINTAINERS.txt
+#/web/UPGRADE.txt
+#/web/README.txt
+#/web/sites/all/README.txt
+#/web/sites/all/modules/README.txt
+#/web/sites/all/themes/README.txt

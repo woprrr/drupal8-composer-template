@@ -1,0 +1,14 @@
+# This file is auto-generated during the composer install
+parameters:
+    site.name: 'woprrr docker'
+    site.locale: en
+    site.profile: standard
+    admin.account.name: admin
+    admin.account.password: admin
+    admin.account.mail: your@mail.fr
+    site.language.uuid: ''
+    site.language.locale: en
+    dev.modules:
+        - devel
+        - kint
+        - admin_toolbar
