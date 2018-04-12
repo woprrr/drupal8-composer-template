@@ -38,6 +38,7 @@ clean:
 	@rm -Rf report
 	@rm -Rf web/
 	@rm -Rf etc/ssl/*
+	@rm -Rf bin/
 
 code-sniff:
 	@echo "Checking the standard code..."
