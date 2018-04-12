@@ -20,6 +20,7 @@ settings/development.services.yml
 vendor/
 bin/
 composer.lock
+etc/ssl/*
 
 # TO DELETE IF YOU WANT ADD YOUR CONFIG IN YOUR GIT REPO.
 config/*
