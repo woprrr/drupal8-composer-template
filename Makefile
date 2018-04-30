@@ -24,10 +24,14 @@ help:
 	@echo "  test                Test application"
 
 init:
-	@$(shell cp -n $(shell pwd)/web/composer.json.dist $(shell pwd)/web/app/composer.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/web/composer.json.dist $(shell pwd)/web/composer.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/web/composer.require.json.dist $(shell pwd)/web/composer.require.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/web/composer.suggested.json.dist $(shell pwd)/web/composer.suggested.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/settings/example.settings.local.php $(shell pwd)/settings/settings.local.php 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/settings/example.development.services.yml $(shell pwd)/settings/development.services.yml 2> /dev/null)
 
 apidoc:
-	@docker-compose exec -T php php -d memory_limit=256M -d xdebug.profiler_enable=0 ./app/vendor/bin/apigen generate app/src --destination app/doc
+	@docker-compose exec -T php php -d memory_limit=256M -d xdebug.profiler_enable=0 vendor/bin/apigen generate app/src --destination doc
 	@make resetOwner
 
 clean:
@@ -35,16 +39,18 @@ clean:
 	@rm -Rf $(MYSQL_DUMPS_DIR)/*
 	@rm -Rf vendor/
 	@rm -Rf composer.lock
+	@rm -Rf settings/settings.local.php
+	@rm -Rf settings/development.services.yml
 	@rm -Rf report
 	@rm -Rf web/
 	@rm -Rf etc/ssl/*
 	@rm -Rf bin/
 
 code-sniff:
-	@echo "Checking the standard code..."
-	@docker-compose exec -T php ./app/vendor/bin/phpcs -v --standard=PSR2 app/src
+	@echo "Checking the Drupal standard code..."
+	@docker-compose exec -T php bin/phpcs --standard=PSR2 --extensions=php,module,inc,install,test,profile,theme,js,css,info,txt,md web/modules
 
-c-up:
+c-update:
 	@docker-compose exec -T php composer update
 
 c-install:
@@ -56,8 +62,9 @@ drupal-si:
 drupal-update:
 	@docker-compose exec -T php composer site-update
 
-docker-start: init
+docker-start: init gen-certs
 	docker-compose up -d
+	@make c-install
 
 docker-stop:
 	@docker-compose down -v
@@ -79,15 +86,16 @@ mysql-restore:
 
 phpmd:
 	@docker-compose exec -T php \
-	./app/vendor/bin/phpmd \
-	./app/src \
+	./vendor/bin/phpmd \
+	./web \
 	text cleancode,codesize,controversial,design,naming,unusedcode
 
 test: code-sniff
-	@docker-compose exec -T php ./app/vendor/bin/phpunit --colors=always --configuration ./app/
+	@echo "Lets go to test complete drupal suite..."
+	@docker-compose exec -T php ./bin/phpunit web/core --colors=always
 	@make resetOwner
 
 resetOwner:
-	@$(shell chown -Rf $(SUDO_USER):$(shell id -g -n $(SUDO_USER)) $(MYSQL_DUMPS_DIR) "$(shell pwd)/etc/ssl" "$(shell pwd)/web/app" 2> /dev/null)
+	@$(shell chown -Rf $(SUDO_USER):$(shell id -g -n $(SUDO_USER)) $(MYSQL_DUMPS_DIR) "$(shell pwd)/etc/ssl" "$(shell pwd)/web" 2> /dev/null)
 
 .PHONY: clean test code-sniff init

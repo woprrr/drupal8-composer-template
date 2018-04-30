@@ -295,7 +295,7 @@ $config_directories = array();
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = '';
+$settings['hash_salt'] = 'AQT-sAU7z_NzPlJXNUwOtwAjoPNJFenE-GyflU_b7L6lhrtLXWU9ondy-dn4OztdQ71zpjklEQ';
 
 /**
  * Deployment identifier.
@@ -780,5 +780,5 @@ $settings['entity_update_batch_size'] = 50;
  * Keep this code block at the end of this file to take full effect.
  */
 if (file_exists(__DIR__ . '/settings.local.php')) {
-  include __DIR__ . '/settings.local.php';
+    include __DIR__ . '/settings.local.php';
 }

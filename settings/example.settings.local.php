@@ -12,16 +12,15 @@ $settings['file_chmod_directory'] = 0777;
 $settings['file_chmod_file'] = 0777;
 
 # Databases.
-$databases['default']['default'] = array(
-  'driver' => 'mysql',
-  'database' => 'composer',
-  'username' => 'composer',
-  'password' => 'composer',
-  'host' => 'localhost',
-  'port' => 3306,
+$databases['default']['default'] = array (
+  'database' => getenv('MYSQL_DATABASE'),
+  'username' => getenv('MYSQL_ROOT_USER'),
+  'password' => getenv('MYSQL_ROOT_PASSWORD'),
   'prefix' => '',
-  'collation' => 'utf8mb4_general_ci',
+  'host' => 'mysqldb',
+  'port' => '3306',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
 );
 
 # Config.

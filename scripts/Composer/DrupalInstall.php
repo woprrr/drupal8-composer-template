@@ -93,7 +93,8 @@ class DrupalInstall extends DrupalHandlerBase {
       $io->write("<info>#step {$step}.</info> Drupal Configuration : Import default (<warning>sync</warning>).");
       $process = new Process(self::drush() . " cim --quiet -y");
     }
-    $process->run();
+      $process->setTimeout('1200');
+      $process->run();
 
     self::writeDrushOutput($io, $process);
     $step++;
