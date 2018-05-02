@@ -83,6 +83,8 @@
     }
   },
   "scripts": {
+    "phpcs": "phpcs --standard=web/core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --",
+    "phpcbf": "phpcbf --standard=web/core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --",
     "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
     "site-install": "Drupal\\Composer\\Plugins\\DrupalInstall::process",
     "site-update": "Drupal\\Composer\\Plugins\\DrupalUpdate::process",
