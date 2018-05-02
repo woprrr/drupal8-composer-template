@@ -24,16 +24,16 @@ help:
 	@echo "${RED}Important: All ${BLUE}COMMAND${NC} import automatically your \`sync\` exported configuration. You can specify another configuration to install/update/export ${YELLOW}\`eg: make ${BLUE}COMMAND${NC} my_config_name\`.${NC}"
 	@echo "  ${BLUE}drupal-si             : ${LIGHT_BLUE}Install new Drupal instance and drop database.${NC}"
 	@echo "  ${BLUE}drupal-update         : ${LIGHT_BLUE}Update your current Drupal instance and (re)import your \`/config\` exported configuration.${NC}"
-	@echo "  ${BLUE}drupal-config-export  : ${LIGHT_BLUE}Update your current Drupal instance and (re)import your \`/config\` exported configuration.${NC}"
+	@echo "  ${BLUE}drupal-config-export  : ${LIGHT_BLUE}Export your current Drupal instance from \`/config\` by default. That can be in sub-folder depend your custom changes.${NC}"
 
 init:
 	@echo "${BLUE}Project configuration initialization:${NC}"
-	@$(shell cp -n $(shell pwd)/web/composer.json.dist $(shell pwd)/web/composer.json 2> /dev/null)
-	@$(shell cp -n $(shell pwd)/web/composer.require.json.dist $(shell pwd)/web/composer.require.json 2> /dev/null)
-	@$(shell cp -n $(shell pwd)/web/composer.suggested.json.dist $(shell pwd)/web/composer.suggested.json 2> /dev/null)
-	@$(shell cp -n $(shell pwd)/settings/example.settings.local.php $(shell pwd)/settings/settings.local.php 2> /dev/null)
-	@$(shell cp -n $(shell pwd)/settings/example.development.services.yml $(shell pwd)/settings/development.services.yml 2> /dev/null)
-	@$(shell cp -n $(shell pwd)/settings/example.phpunit.xml.dist $(shell pwd)/settings/phpunit.xml 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/composer.json.dist $(shell pwd)/composer.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/composer.required.json.dist $(shell pwd)/composer.require.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/composer.suggested.json.dist $(shell pwd)/composer.suggested.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/settings/settings.local.php.dist $(shell pwd)/settings/settings.local.php 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/settings/development.services.yml.dist $(shell pwd)/settings/development.services.yml 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/settings/phpunit.xml.dist $(shell pwd)/settings/phpunit.xml 2> /dev/null)
 
 clean:
 	@echo "${BLUE}Clean directories:${NC}"
@@ -48,6 +48,10 @@ clean:
 	@rm -Rf web/
 	@rm -Rf etc/ssl/*
 	@rm -Rf bin/
+	@rm -Rf app/Drupal/parameters.yml
+	@rm -Rf composer.required.json
+	@rm -Rf composer.suggested.json
+	@rm -Rf composer.json
 
 clean-drupal-config:
 	@echo "${RED}Clean exported config directories:${NC}"
@@ -64,7 +68,7 @@ c-update:
 c-install:
 	@echo "${BLUE}Installing your application dependencies:${NC}"
 	@docker-compose exec -T php composer install
-	@echo "$\n{BLUE}Initialize phpunit Drupal Core file:${NC}"
+	@echo "\n${BLUE}Initialize phpunit Drupal Core file:${NC}"
 	@$(shell cp -n $(shell pwd)/settings/phpunit.xml $(shell pwd)/web/core/phpunit.xml 2> /dev/null)
 
 drupal-si:

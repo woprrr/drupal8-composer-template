@@ -33,7 +33,7 @@ class DrupalUpdate extends DrupalHandlerBase {
     $io->write("<info>#step {$step}.</info> Settings : Prepare directories");
     self::prepareFilesDirectories($event);
 
-    $params = self::getDrushConfig(file_get_contents('app/Drupal/config/parameters.yml'));
+    $params = self::getDrushConfig(file_get_contents('app/Drupal/parameters.yml'));
     $dev_modules = $params['parameters']['dev.modules'];
 
     self::devModulesManager($event, 'pm-uninstall', $dev_modules);
