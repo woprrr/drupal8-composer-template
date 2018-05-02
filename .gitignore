@@ -17,6 +17,7 @@ report/
 app/Drupal/parameters.yml
 settings/settings.local.php
 settings/development.services.yml
+settings/phpunit.xml
 vendor/
 bin/
 composer.lock
