@@ -28,8 +28,9 @@ help:
 
 init:
 	@echo "${BLUE}Project configuration initialization:${NC}"
+	@$(shell cp -n $(shell pwd)/docker-compose.yml.dist $(shell pwd)/docker-compose.yml 2> /dev/null)
 	@$(shell cp -n $(shell pwd)/composer.json.dist $(shell pwd)/composer.json 2> /dev/null)
-	@$(shell cp -n $(shell pwd)/composer.required.json.dist $(shell pwd)/composer.require.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/composer.required.json.dist $(shell pwd)/composer.required.json 2> /dev/null)
 	@$(shell cp -n $(shell pwd)/composer.suggested.json.dist $(shell pwd)/composer.suggested.json 2> /dev/null)
 	@$(shell cp -n $(shell pwd)/settings/settings.local.php.dist $(shell pwd)/settings/settings.local.php 2> /dev/null)
 	@$(shell cp -n $(shell pwd)/settings/development.services.yml.dist $(shell pwd)/settings/development.services.yml 2> /dev/null)
@@ -52,6 +53,7 @@ clean:
 	@rm -Rf composer.required.json
 	@rm -Rf composer.suggested.json
 	@rm -Rf composer.json
+	@rm -Rf docker-compose.yml
 
 clean-drupal-config:
 	@echo "${RED}Clean exported config directories:${NC}"
