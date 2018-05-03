@@ -44,8 +44,7 @@ class DrupalInstall extends DrupalHandlerBase {
     // Now we need to change permission of this file before re-install.
     $fs = new Filesystem();
     $fs->chmod(static::getDrupalRootFolder(getcwd()) . '/sites/default/settings.php', 0666);
-
-    $process = new Process(self::drush() . " si {$site_params['site.profile']} --site-name='{$site_params['site.name']}' --account-name={$site_params['admin.account.name']} --account-pass={$site_params['admin.account.password']} --account-mail={$site_params['admin.account.mail']} --locale={$site_params['site.language.locale']} -y");
+    $process = new Process(self::drush() . " si " . self::resolvePlaceholderedValue($site_params['site.profile']) . " --site-name='" . self::resolvePlaceholderedValue($site_params['site.name']) . "' --account-name='" . self::resolvePlaceholderedValue($site_params['admin.account.name']) . "' --account-pass='" . self::resolvePlaceholderedValue($site_params['admin.account.password']) . "' --account-mail='" . self::resolvePlaceholderedValue($site_params['admin.account.mail']) . "' --locale='" . self::resolvePlaceholderedValue($site_params['site.language.locale']) . "' -y");
     $process->setTimeout('1200');
     $process->run();
 
@@ -72,7 +71,7 @@ class DrupalInstall extends DrupalHandlerBase {
 
     if (!empty($site_params['site.language.uuid'])) {
       $io->write("<info>#step {$step}.</info> Drupal install : Force language uuid");
-      $process = new Process(self::drush() . " cset language.entity.{$site_params['site.language.locale']} uuid {$site_params['site.language.uuid']} -y");
+      $process = new Process(self::drush() . " cset language.entity.{${self::resolvePlaceholderedValue($site_params['site.language.locale'])}} uuid {${self::resolvePlaceholderedValue($site_params['site.language.uuid'])}} -y");
       $process->run();
 
       if (!$process->isSuccessful()) {

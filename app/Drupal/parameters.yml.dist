@@ -1,13 +1,12 @@
 parameters:
-    site.name: 'Your Website Name'
-    site.locale: en
-    # In re-install mode you need to install as standard ONLY FOR FIRST INSTALL, after you does use config_installer.
-    site.profile: standard
-    admin.account.name: admin
-    admin.account.password: admin
-    admin.account.mail: your@mail.fr
+    site.name: ${DRUPAL_DEFAULT_SITENAME}
+    site.locale: ${DRUPAL_DEFAULT_LOCALE}
+    site.profile: ${DRUPAL_INSTALL_PROFILE}
+    admin.account.name: ${DRUPAL_ADMIN_USERNAME}
+    admin.account.password: ${DRUPAL_ADMIN_PASSWORD}
+    admin.account.mail: ${DRUPAL_ADMIN_MAIL}
     site.language.uuid: ''
-    site.language.locale: en
+    site.language.locale: ${DRUPAL_DEFAULT_LOCALE}
     dev.modules:
         - devel
         - kint

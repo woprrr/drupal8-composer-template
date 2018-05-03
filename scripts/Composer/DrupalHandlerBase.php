@@ -154,11 +154,31 @@ abstract class DrupalHandlerBase {
    * ATM we have a strange "bug", when drush return on the Output
    * that is an ErrorOutput to view sucess/ok status message.
    *
-   * @param ConsoleIO   $event
-   * @param Process                 $process
+   * @param ConsoleIO $event
+   * @param Process   $process
    */
   protected static function writeDrushOutput(ConsoleIO $io, Process $process) {
     $io->write($process->getOutput());
     $io->write($process->getErrorOutput());
   }
+
+    /**
+     * Extract and resolve all .ENV variables found in your app parameters.
+     *
+     * @param string $value
+     *
+     * @return string|array|false The value of the environment variable.
+     *
+     * @throws \Exception
+     *   Thrown when placeholder match with any .ENV variables.
+     */
+    protected static function resolvePlaceholderedValue($value) {
+        if (preg_match('/\s?\${[A-Z]+[^}]+\}/', $value, $matches, PREG_OFFSET_CAPTURE, 0)) {
+            if (preg_match('/\s?[A-Z]+.+[^}]/', $value, $variable_name, PREG_OFFSET_CAPTURE, 0)) {
+                return getenv(current($variable_name)[0]);
+            }
+
+            throw new \Exception(sprintf('No ENV variable %s found.', $value));
+        }
+    }
 }
