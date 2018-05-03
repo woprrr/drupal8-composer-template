@@ -25,6 +25,10 @@ etc/ssl/*
 
 # TO DELETE IF YOU WANT ADD YOUR CONFIG IN YOUR GIT REPO.
 config/*
+composer.json
+composer.required.json
+composer.suggested.json
+docker-compose.yml
 
 ###                                                                          ###
 #                                                                              #
