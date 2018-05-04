@@ -75,10 +75,14 @@ c-install:
 
 drupal-si:
 	@echo "${BLUE}Installing your Drupal Application:${NC}"
+	# Restart PHP-FPM to avoid caches of container if you change ENV variables.
+	@docker-compose up -d php
 	@docker-compose exec -T php composer site-install
 
 drupal-update:
 	@echo "${BLUE}Updating your Drupal Application:${NC}"
+	# Restart PHP-FPM to avoid caches of container if you change ENV variables.
+	@docker-compose up -d php
 	@docker-compose exec -T php composer site-update
 
 drupal-config-export:

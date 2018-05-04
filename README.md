@@ -158,19 +158,11 @@ ___
 
 ## Run the application
 
-1. Setup with editing all settings/*.dist files as you needed
-You can also already configure the `app/Drupal/parameters.yml.dist` file with correct information.
+1. Setup project environment variables :
 
-**IMPORTANT**
-In every case you need to install a fresh instance of drupal with a profile `standard` or your preferred custom drupal profile for `site.profile: your_profile_name`. After drupal-si and have export your config in `config/*` folder you will change `site.profile: your_profile_name` to `site.profile: config_installer`
+    Setup your project by editing the `.env` file and customize all environement variables. Specifically all `Drupal_*` variable are criticaly important to next steps and to customize your drupal instances.
 
-2. Initialize application : 
-
-    ```sh
-    make init
-    ```
-
-3. Install and start Drupal application :
+2. Initialize/Install project dependencies :
 
     ```sh
     make docker-start
@@ -182,16 +174,34 @@ In every case you need to install a fresh instance of drupal with a profile `sta
     sudo docker-compose logs -f # Follow log output
     ```
 
-4. Install Drupal instance:
+4. Install Drupal instance :
 
     ```sh
     make drupal-si
     ```
 
-    **Or specific configuration**
+    **Or specify name of configuration instance**
 
     ```sh
-    make drupal-si my_configuration_stage
+    make drupal-si my_configuration_name
+    ```
+    All of configuration available are defined in your `settings/settings.local.php` file from 
+    
+    ```php
+    # Config directories
+    $config_directories = array(
+      my_configuration_name => '/absolute/path/to/config'
+    );
+    ```
+    Example of typical workflow with configuration
+    ```php
+    # Config directories
+    $config_directories = array(
+      dev => getcwd() . '/../config/dev',
+      preprod => getcwd() . '/../config/preprod',
+      prod => getcwd() . '/../config/prod',
+      stage => getcwd() . '/../config/stage',
+    );
     ```
 
 5. Open your favorite browser :
@@ -200,11 +210,18 @@ In every case you need to install a fresh instance of drupal with a profile `sta
     * [https://localhost:3000](https://localhost:3000/) (Web Front HTTPS).
     * [http://localhost:8080](http://localhost:8080/) PHPMyAdmin (username: dev, password: dev)
 
-6. Stop and clear services
+6. Stop and clear services :
 
     ```sh
     sudo docker-compose down -v
     ```
+    
+7. Stop and delete all traces of changes from skeleton :
+
+    ```sh
+    sudo make docker-stop
+    ```
+    That delete all files to reset skeleton at his initial state.
 
 ### Play with Drupal Configuration workflow
 1. Export your current configuration instance
@@ -219,18 +236,20 @@ In every case you need to install a fresh instance of drupal with a profile `sta
     docker-compose exec -T php composer export-conf
     ```
 
-2. After your first install of project change `site.profile: your_profile_name` to `site.profile: config_installer` in `app/Drupal/parameters.yml.dist` file. That take ability to re-install / update your drupal instance with ./config exported configuration.
+2. After your first install of Drupal instance edit the `.env` file and change the following variable `DRUPAL_INSTALL_PROFILE=standard` to `DRUPAL_INSTALL_PROFILE=config_installer`. That take ability to re-install / update your drupal instance with ./config/* exported configuration states.
 
 3. Re-install or update your instance from exported configuration
 
-**Re-install:**
-With Drop of current drupal database and complete re-import of ./config
-    ```sh
-    make drupal-si
-    ```
-**Update:**
-With following drupal commands (up-db / ent-up ).
-> Every action processed by scripts switch your Drupal instance on `maintenance` mode and switch Online after every action automatically.
+    **Re-install:**
+    With Drop of current drupal database and complete re-import of ./config
+        ```sh
+        make drupal-si
+        ```
+
+    **Update:**
+    With following drupal commands (up-db / ent-up ).
+    > Every action processed by scripts switch your Drupal instance on `maintenance` mode and switch Online after every action automatically.
+
     ```sh
     make drupal-update
     ```
@@ -238,7 +257,7 @@ With following drupal commands (up-db / ent-up ).
 4. In more advanced usage you can also specified a drupal configuration name
 
     ```sh
-    make drupal-si preprod ||make drupal-update preprod
+    make drupal-si preprod || make drupal-update preprod
     ```
     
     **Or with Docker Compose**
@@ -247,6 +266,54 @@ With following drupal commands (up-db / ent-up ).
     docker-compose exec -T php composer site-install preprod || docker-compose exec -T php composer site-update preprod
     ```
 
+### Examples of life cycle
+
+1. Start the Project containers :
+    
+    ```sh
+    sudo make docker-start
+    ```
+    
+2. Edit .env file.
+    
+3. Install drupal 8 instance :
+    
+    ```sh
+    sudo make docker-si
+    ```
+    
+3. Exporting Drupal configuration files :
+    
+        ```sh
+        make drupal-config-export
+        ```
+        **Or with a specific destination**
+        ```sh
+        make drupal-config-export my_configuration_name
+        ```
+    
+5. Enable Re-install from configuration mode :
+        Edit `.env` file by changing `DRUPAL_INSTALL_PROFILE=standard` to `DRUPAL_INSTALL_PROFILE=config_installer`.
+    
+6. Re-installation of project from exported configuration :
+        ```sh
+        make drupal-si
+        ```
+7. Update of current instance :
+    Edit one of configuration yml in your `/config` folder eg: system.site.site_name.
+    and process to updating your drupal instance from configuration by using 
+    
+        ```sh
+        make drupal-update
+        ```
+    Your Site Name will change that you specified in system.site.site_name yml file.
+    
+8. Another tips ? Call Help ;) :
+    Show help :
+    
+    ```sh
+    make help
+    ```
 ___
 
 ## Use Makefile
@@ -272,21 +339,6 @@ When developing, you can use [Makefile](https://en.wikipedia.org/wiki/Make_(soft
 | drupal-si            | Install new Drupal instance and drop database.                                                                          |
 | drupal-update        | Update your current Drupal instance and (re)import your \`/config\` exported configuration.                             |
 | drupal-config-export | Export your current Drupal instance from \`/config\` by default. That can be in sub-folder depend your custom changes.  |
-
-### Examples
-
-Start the application :
-
-```sh
-sudo make docker-start
-```
-
-Show help :
-
-```sh
-make help
-```
-
 ___
 
 ## Use Docker commands
@@ -391,10 +443,9 @@ source .env && sudo docker exec -i $(sudo docker-compose ps -q mysqldb) mysql -u
 ?>
 ```
 Or using Drush to check if your database configuration is OK
-
-    ```sh
+```sh
     docker-compose exec -T php bin/drush --root="/var/www/html/web" sql-connect
-    ```
+```
 ___
 
 ## Help us
