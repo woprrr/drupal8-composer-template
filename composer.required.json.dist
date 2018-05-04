@@ -6,7 +6,7 @@
     }
   },
   "require": {
-    "drupal/core": "8.*",
+    "drupal/core": "~8.5",
     "drupal/console": "^1.0.1"
   },
   "require-dev": {
@@ -17,7 +17,6 @@
     "drupal/drupal-extension": "~3.2",
     "jarnaiz/behat-junit-formatter": "^1.3.2",
     "se/selenium-server-standalone": "^2.53",
-    "jakoch/phantomjs-installer":   "2.1.1-p07",
     "dmore/chrome-mink-driver": "2.4.0",
     "dmore/behat-chrome-extension": "^1.0.0",
     "mikey179/vfsStream": "~1.2",
@@ -25,9 +24,10 @@
     "behat/mink-goutte-driver": "~1.2",
     "jcalderonzumba/gastonjs": "~1.0.2",
     "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
-    "phpunit/phpunit": ">=4.8.28 <5",
+    "phpunit/phpunit": "~6",
+    "sebastian/version": "~2",
     "symfony/browser-kit": ">=2.8.13 <3.0",
-    "drush/drush": "8.*",
+    "drush/drush": "^9",
     "drupal/coder": "~8.2.0",
     "phing/phing": "^2.14",
     "drupal/devel": "^1.0",

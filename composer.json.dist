@@ -1,6 +1,6 @@
 {
-  "name": "woprrr/drupal8-composer-template",
-  "description": "A complex template for Drupal 8 with composer management.",
+  "name": "woprrr/drupal-contribute",
+  "description": "Woprrr contributor skeleton",
   "type": "project",
   "license": "GPL-2.0+",
   "authors": [
@@ -10,8 +10,8 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/woprrr/drupal8-composer-template/issues",
-    "docs": "https://github.com/woprrr/drupal8-composer-template/blob/8.2.x/README.md"
+    "issues": "https://github.com/woprrr/drupal-contribute/issues",
+    "docs": "https://github.com/woprrr/drupal-contribute/blob/8.2.x/README.md"
   },
   "require": {
     "php": ">=5.6",
@@ -52,8 +52,8 @@
     },
     "incenteev-parameters": [
       {
-        "file": "app/Drupal/config/parameters.yml",
-        "dist-file": "app/Drupal/config/parameters.yml.dist"
+        "file": "app/Drupal/parameters.yml",
+        "dist-file": "app/Drupal/parameters.yml.dist"
       }
     ],
     "installer-types": [
@@ -83,22 +83,18 @@
     }
   },
   "scripts": {
+    "phpcs": "phpcs --standard=web/core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --",
+    "phpcbf": "phpcbf --standard=web/core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --",
     "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
     "site-install": "Drupal\\Composer\\Plugins\\DrupalInstall::process",
     "site-update": "Drupal\\Composer\\Plugins\\DrupalUpdate::process",
     "export-conf": "Drupal\\Composer\\Plugins\\DrupalExportConf::process",
-    "install-phantomjs": [
-      "rm -rf vendor/bin/phantomjs",
-      "PhantomInstaller\\Installer::installPhantomJS"
-    ],
     "post-install-cmd": [
-      "@composer install-phantomjs",
       "@composer drupal-scaffold",
       "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
     ],
     "post-update-cmd": [
       "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
-    ],
-    "nuke": "rm -r -f bin web vendor"
+    ]
   }
 }

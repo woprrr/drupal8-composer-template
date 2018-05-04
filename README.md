@@ -1,106 +1,453 @@
-Drupal 8 Composer Skeleton
-==========================
-Provide a skeleton for Drupal 8 projects, managing your site (Dependencies / Configuration) by [Composer].
+# Drupal 8 Composer Skeleton
+Drupal 8 skeleton dockerized in sperate containers (Nginx, PHP-FPM, MySQL and PHPMyAdmin).
 
-[Composer]: https://getcomposer.org/
+## Overview
 
-## Requirements
+1. [Install prerequisites](#install-prerequisites)
 
-### Required
-- [Composer installed]
+    Before installing project make sure the following prerequisites have been met.
 
-> Note : Usage of composer globally is not required you can use composer 
+2. [Clone the project](#clone-the-project)
 
-[Composer installed]: https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx
+    We’ll download the code from its repository on GitHub.
 
-## Installation
-1. Clone repository or use quick installation command `composer create-project woprrr/drupal8-composer-template:8.2.x-dev` and follow shell instructions. (IMPORTANT during initialization of project you can use a custom install profile when shell question `site.profile (standard):` appear but if you want to re-install from existing configuration you will change that manually and using `config_installer` instead **show step 4**).
-2. Copy settings files ` cp settings/example.development.services.yml settings/development.services.yml && cp settings/example.settings.local.php settings/settings.local.php`
-3. Edit setting files with your database parameters for `settings.local.php` and your developments preferences with `development.services.yml`.
-4. Initialize project with `composer site-install` command to install a fresh install of Drupal 8 with your specified profile (standard if not changed in `site.profile` app parameter).
-5. After continue export your configuration to initialize the re-install feature if you want to use this mode in your project `composer export-conf`
-6. If you need to use re-install from your previous exported configuration you will edit your app `/app/Drupal/config/parameters.yml` file and change `site.profile (standard): your_choice` with site.profile (standard): `config_installer` see [Re-Run Complete instance from existing configuration folder] for more example.
-7. Now you can use all feature provide by this skeleton `composer site-install` / `composer site-update`.
-8. ENJOY !
+4. [Configure Xdebug](#configure-xdebug) [`Optional`]
 
-## DEMONSTRATION
-You can watch [this video] for more explanation/example of how use all features provided by this skeleton.
+    We'll configure Xdebug for IDE (PHPStorm or Netbeans).
 
-[this video]: https://youtu.be/-4nh6IJZLTw
+5. [Run the application](#run-the-application)
 
-## Re-Run Complete instance from existing configuration folder
-To re-install your instance with new configuration or after an `composer export-conf` we have a dependency with [Config Installer]: https://www.drupal.org/project/config_installer to synchronize your configuration with active instance.
+    By this point we’ll have all the project pieces in place.
 
-After that profile correctly configured you can edit `app/Drupal/config/parameters.yml` and edit file as bellow :
+6. [Use Makefile](#use-makefile) [`Optional` but strongly encouraged for beginner]
 
-```YAML
-# This file is auto-generated during the composer install
-parameters:
-    site.name: 'Woprrr site'
-    site.locale: en
-    site.profile: standard
-    admin.account.name: admin
-    admin.account.password: admin
-    admin.account.mail: your@mail.fr
-    site.language.uuid: ''
-    site.language.locale: en
-    dev.modules:
-        - devel
-        - kint
-        - admin_toolbar
-```
-to
+    When developing, you can use `Makefile` for doing recurrent operations.
 
-```YAML
-# This file is auto-generated during the composer install
-parameters:
-    site.name: 'Woprrr site'
-    site.locale: en
-    site.profile: config_installer
-    admin.account.name: admin
-    admin.account.password: admin
-    admin.account.mail: your@mail.fr
-    site.language.uuid: ''
-    site.language.locale: en
-    dev.modules:
-        - devel
-        - kint
-        - admin_toolbar
+7. [Use Docker Commands](#use-docker-commands)
+
+    When running, you can use docker commands for doing recurrent operations.
+
+___
+
+## Install prerequisites
+
+For now, this project has been mainly created for Unix `(Linux/MacOS)`. Perhaps it could work on Windows.
+
+All requisites should be available for your distribution. The most important are :
+
+* [Git](https://git-scm.com/downloads)
+* [Docker](https://docs.docker.com/engine/installation/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
+
+Check if `docker-compose` is already installed by entering the following command : 
+
+```sh
+which docker-compose
 ```
 
-## Run update
+Check Docker Compose compatibility :
 
-To update your code or applie your exported configuration without complete (re)install, you should use site-update command.
-```bash
-composer site-update your_config_name_to_import
+* [Compose file version 3 reference](https://docs.docker.com/compose/compose-file/)
+
+The following is optional but makes life better :
+
+```sh
+which make
 ```
 
-> Note : That command execute for you usuals drush commands (updb, entup, config-import). 
+### Images to use
 
-### Add new packages Drupal-modules
-Like normal way to add packages in composer you should use the command `composer require drupal/module_machine_name`. For more explanations @see [Drupal.org documentation](https://www.drupal.org/node/2718229)
+* [Nginx](https://hub.docker.com/_/nginx/)
+* [MySQL](https://hub.docker.com/_/mysql/)
+* [PHP-FPM](https://hub.docker.com/r/woprrr/php-fpm/)
+* [PHPMyAdmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin/)
+* [Generate Certificate](https://hub.docker.com/r/jacoelho/generate-certificate/)
 
-### Update project modules
+You should be careful when installing third party web servers such as MySQL or Nginx.
 
-To process an modules update with update script you need to edit your composer.json file and modify version of existing module. After modifications of `composer.json` or `composer.*.json file` you can use the common command
-```bash
-composer update drupal/module_machine_name
+This project use the following ports :
+
+| Server     | Port |
+|------------|------|
+| MySQL      | 8989 |
+| PHPMyAdmin | 8080 |
+| Nginx      | 8000 |
+| Nginx SSL  | 3000 |
+
+___
+
+## Clone the project
+
+To install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), download it and install following the instructions :
+
+```sh
+git clone -b drupal8-skeleton-docker git@github.com:woprrr/drupal8-composer-template.git
 ```
 
-By example for update drupal core version with that method
-```bash
-composer update drupal/core
+Go to the project directory :
+
+```sh
+cd drupal8-composer-template
 ```
 
-If we need to directly enable your module in your site you can edit `core.extensions.yml` file and add your module name to active modules. To tell Drupal configuration system this changes you need to use the following command.
-```bash
-composer site-update your_config_name
+### Project tree
+
+```sh
+.
+├── LICENSE
+├── Makefile
+├── README.md
+├── app
+│   └── Drupal
+│       └── parameters.yml.dist
+├── composer.json.dist
+├── composer.require.json
+├── composer.required.json.dist
+├── composer.suggested.json.dist
+├── config
+├── data
+│   └── db
+│       ├── dumps
+│       └── mysql
+├── doc
+├── docker-compose.yml
+├── etc
+│   ├── nginx
+│   │   ├── default.conf
+│   │   └── default.template.conf
+│   ├── php
+│   │   └── php.ini
+│   └── ssl
+├── scripts
+│   └── Composer
+│       ├── DrupalExportConf.php
+│       ├── DrupalHandlerBase.php
+│       ├── DrupalInstall.php
+│       └── DrupalUpdate.php
+└── settings
+    ├── development.services.yml.dist
+    ├── phpunit.xml.dist
+    ├── services.yml
+    ├── settings.local.php.dist
+    └── settings.php
 ```
 
-> Note : We can just add your package and enable your module in UI to export your changes after via `composer export-conf your_config_name_to_import` command.
+___
 
-## FAQ
-- These project are forked to [drupal-composer/drupal-project](https://github.com/drupal-composer/drupal-project) ?
 
-No it's not, few part of these project are totally different. These project are based on full php application, without any bash or external scripts.
-These project not have same goal of drupal-project template. I really love drupal-project template, that an amazing project and I would love to participate to this with that project !!!! That project inspire me at the begining, the architecture of folders are similar.
+## Configure Xdebug
+
+If you use another IDE than [PHPStorm](https://www.jetbrains.com/phpstorm/) or [Netbeans](https://netbeans.org/), go to the [remote debugging](https://xdebug.org/docs/remote) section of Xdebug documentation.
+
+For a better integration of Docker to PHPStorm, use the [documentation](https://github.com/nanoninja/docker-nginx-php-mysql/blob/master/doc/phpstorm-macosx.md).
+
+1. Get your own local IP address :
+
+    ```sh
+    sudo ifconfig
+    ```
+
+2. Edit php file `etc/php/php.ini` and comment or uncomment the configuration as needed.
+
+3. Set the `remote_host` parameter with your IP :
+
+    ```sh
+    xdebug.remote_host=192.168.0.1 # your IP
+    ```
+___
+
+## Run the application
+
+1. Setup project environment variables :
+
+    Setup your project by editing the `.env` file and customize all environement variables. Specifically all `Drupal_*` variable are criticaly important to next steps and to customize your drupal instances.
+
+2. Initialize/Install project dependencies :
+
+    ```sh
+    make docker-start
+    ```
+
+    **Please wait this might take a several minutes...**
+
+    ```sh
+    sudo docker-compose logs -f # Follow log output
+    ```
+
+4. Install Drupal instance :
+
+    ```sh
+    make drupal-si
+    ```
+
+    **Or specify name of configuration instance**
+
+    ```sh
+    make drupal-si my_configuration_name
+    ```
+    All of configuration available are defined in your `settings/settings.local.php` file from 
+    
+    ```php
+    # Config directories
+    $config_directories = array(
+      my_configuration_name => '/absolute/path/to/config'
+    );
+    ```
+    Example of typical workflow with configuration
+    ```php
+    # Config directories
+    $config_directories = array(
+      dev => getcwd() . '/../config/dev',
+      preprod => getcwd() . '/../config/preprod',
+      prod => getcwd() . '/../config/prod',
+      stage => getcwd() . '/../config/stage',
+    );
+    ```
+
+5. Open your favorite browser :
+
+    * [http://localhost:8000](http://localhost:8000/) (Web Front).
+    * [https://localhost:3000](https://localhost:3000/) (Web Front HTTPS).
+    * [http://localhost:8080](http://localhost:8080/) PHPMyAdmin (username: dev, password: dev)
+
+6. Stop and clear services :
+
+    ```sh
+    sudo docker-compose down -v
+    ```
+    
+7. Stop and delete all traces of changes from skeleton :
+
+    ```sh
+    sudo make docker-stop
+    ```
+    That delete all files to reset skeleton at his initial state.
+
+### Play with Drupal Configuration workflow
+1. Export your current configuration instance
+
+    ```sh
+    make drupal-config-export
+    ```
+    
+    **Or with Docker Compose**
+
+    ```sh
+    docker-compose exec -T php composer export-conf
+    ```
+
+2. After your first install of Drupal instance edit the `.env` file and change the following variable `DRUPAL_INSTALL_PROFILE=standard` to `DRUPAL_INSTALL_PROFILE=config_installer`. That take ability to re-install / update your drupal instance with ./config/* exported configuration states.
+
+3. Re-install or update your instance from exported configuration
+
+    **Re-install:**
+    With Drop of current drupal database and complete re-import of ./config
+        ```sh
+        make drupal-si
+        ```
+
+    **Update:**
+    With following drupal commands (up-db / ent-up ).
+    > Every action processed by scripts switch your Drupal instance on `maintenance` mode and switch Online after every action automatically.
+
+    ```sh
+    make drupal-update
+    ```
+
+4. In more advanced usage you can also specified a drupal configuration name
+
+    ```sh
+    make drupal-si preprod || make drupal-update preprod
+    ```
+    
+    **Or with Docker Compose**
+
+    ```sh
+    docker-compose exec -T php composer site-install preprod || docker-compose exec -T php composer site-update preprod
+    ```
+
+### Examples of life cycle
+
+1. Start the Project containers :
+    
+    ```sh
+    sudo make docker-start
+    ```
+    
+2. Edit .env file.
+    
+3. Install drupal 8 instance :
+    
+    ```sh
+    sudo make docker-si
+    ```
+    
+3. Exporting Drupal configuration files :
+    
+        ```sh
+        make drupal-config-export
+        ```
+        **Or with a specific destination**
+        ```sh
+        make drupal-config-export my_configuration_name
+        ```
+    
+5. Enable Re-install from configuration mode :
+        Edit `.env` file by changing `DRUPAL_INSTALL_PROFILE=standard` to `DRUPAL_INSTALL_PROFILE=config_installer`.
+    
+6. Re-installation of project from exported configuration :
+        ```sh
+        make drupal-si
+        ```
+7. Update of current instance :
+    Edit one of configuration yml in your `/config` folder eg: system.site.site_name.
+    and process to updating your drupal instance from configuration by using 
+    
+        ```sh
+        make drupal-update
+        ```
+    Your Site Name will change that you specified in system.site.site_name yml file.
+    
+8. Another tips ? Call Help ;) :
+    Show help :
+    
+    ```sh
+    make help
+    ```
+___
+
+## Use Makefile
+
+When developing, you can use [Makefile](https://en.wikipedia.org/wiki/Make_(software)) for doing the following operations :
+
+| Name                 | Description                                                                                                             |
+|----------------------|-------------------------------------------------------------------------------------------------------------------------|
+| code-sniff           | Check the API with PHP Code Sniffer (Drupal Standards).                                                                 |
+| clean                | Clean directories for reset.                                                                                            |
+| c-install            | Install PHP/Drupal dependencies with composer.                                                                          |
+| c-update             | Update PHP/Drupal dependencies with composer.                                                                           |
+| clean-drupal-config  | Delete exported configuration from project.                                                                             |
+| docker-start         | Create and start containers.                                                                                            |
+| docker-stop          | Stop and clear all services.                                                                                            |
+| gen-certs            | Generate SSL certificates.                                                                                              |
+| logs                 | Follow log output                                                                                                       |
+| mysql-dump           | Create backup of all databases                                                                                          |
+| mysql-restore        | Restore backup of all databases                                                                                         |
+| test                 | Test all application (custom and contribution modules).                                                                 |
+| test-contrib         | Test application with phpunit                                                                                           |
+| test-custom-modules  | Test Drupal custom modules.                                                                                             |
+| drupal-si            | Install new Drupal instance and drop database.                                                                          |
+| drupal-update        | Update your current Drupal instance and (re)import your \`/config\` exported configuration.                             |
+| drupal-config-export | Export your current Drupal instance from \`/config\` by default. That can be in sub-folder depend your custom changes.  |
+___
+
+## Use Docker commands
+
+### Installing package with composer
+
+```sh
+docker-compose exec -T php composer install
+```
+
+### Requiring package with composer
+
+```sh
+docker-compose exec -T php composer require drupal/core
+```
+
+### Updating PHP dependencies with composer
+
+```sh
+docker-compose exec -T php composer update
+```
+
+### Testing PHP application with PHPUnit
+
+```sh
+docker-compose exec -T php bin/phpunit -c ./web/core ./web
+```
+
+### Fixing standard code with [CODER](https://www.drupal.org/project/coder)
+
+```sh
+docker-compose exec -T php composer phpcs ./web/modules/ or specify more specific path.
+```
+
+### Checking the standard code with [CODER](https://www.drupal.org/project/coder)
+
+```sh
+sudo docker-compose exec -T php ./app/vendor/bin/phpcs -v --standard=PSR2 ./app/src
+```
+
+### Checking installed PHP extensions
+
+```sh
+sudo docker-compose exec php php -m
+```
+
+### Handling database
+
+#### MySQL shell access
+
+```sh
+sudo docker exec -it mysql bash
+```
+
+and
+
+```sh
+mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD"
+```
+
+#### Creating a backup of all databases
+
+```sh
+mkdir -p data/db/dumps
+```
+
+```sh
+source .env && sudo docker exec $(sudo docker-compose ps -q mysqldb) mysqldump --all-databases -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" > "data/db/dumps/db.sql"
+```
+
+#### Restoring a backup of all databases
+
+```sh
+source .env && sudo docker exec -i $(sudo docker-compose ps -q mysqldb) mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" < "data/db/dumps/db.sql"
+```
+
+#### Creating a backup of single database
+
+**`Notice:`** Replace "YOUR_DB_NAME" by your custom name.
+
+```sh
+source .env && sudo docker exec $(sudo docker-compose ps -q mysqldb) mysqldump -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" --databases YOUR_DB_NAME > "data/db/dumps/YOUR_DB_NAME_dump.sql"
+```
+
+#### Restoring a backup of single database
+
+```sh
+source .env && sudo docker exec -i $(sudo docker-compose ps -q mysqldb) mysql -u"$MYSQL_ROOT_USER" -p"$MYSQL_ROOT_PASSWORD" < "data/db/dumps/YOUR_DB_NAME_dump.sql"
+```
+
+
+#### Connecting MySQL from [PDO](http://php.net/manual/en/book.pdo.php)
+
+```php
+<?php
+    try {
+        $dsn = 'mysql:host=mysql;dbname=test;charset=utf8;port=3306';
+        $pdo = new PDO($dsn, 'dev', 'dev');
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+?>
+```
+Or using Drush to check if your database configuration is OK
+```sh
+    docker-compose exec -T php bin/drush --root="/var/www/html/web" sql-connect
+```
+___
+
+## Help us
+
+Any thought, feedback or (hopefully not!)

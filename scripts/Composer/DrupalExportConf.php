@@ -27,7 +27,7 @@ class DrupalExportConf extends DrupalHandlerBase {
   public static function process(Event $event) {
     $step = 1;
     $io = $event->getIO();
-    $dc = self::getDrushConfig(file_get_contents('app/Drupal/config/parameters.yml'));
+    $dc = self::getDrushConfig(file_get_contents('app/Drupal/parameters.yml'));
 
     self::devModulesManager($event, 'pm-uninstall', $dc['parameters']['dev.modules']);
 

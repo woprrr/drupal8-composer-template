@@ -1,0 +1,13 @@
+parameters:
+    site.name: ${DRUPAL_DEFAULT_SITENAME}
+    site.locale: ${DRUPAL_DEFAULT_LOCALE}
+    site.profile: ${DRUPAL_INSTALL_PROFILE}
+    admin.account.name: ${DRUPAL_ADMIN_USERNAME}
+    admin.account.password: ${DRUPAL_ADMIN_PASSWORD}
+    admin.account.mail: ${DRUPAL_ADMIN_MAIL}
+    site.language.uuid: ''
+    site.language.locale: ${DRUPAL_DEFAULT_LOCALE}
+    dev.modules:
+        - devel
+        - kint
+        - admin_toolbar
