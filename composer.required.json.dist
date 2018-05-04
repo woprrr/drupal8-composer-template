@@ -27,7 +27,7 @@
     "phpunit/phpunit": "~6",
     "sebastian/version": "~2",
     "symfony/browser-kit": ">=2.8.13 <3.0",
-    "drush/drush": "8.*",
+    "drush/drush": "^9",
     "drupal/coder": "~8.2.0",
     "phing/phing": "^2.14",
     "drupal/devel": "^1.0",
