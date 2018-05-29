@@ -1,0 +1,73 @@
+#Ignore file endind with map
+*.map
+
+# Application
+composer.lock
+vendor/
+doc/
+report/
+/data/
+
+# Ignore PHPSTORM files.
+/.idea/
+
+/web/
+
+# Ignore settings local files.
+app/Drupal/parameters.yml
+settings/settings.local.php
+settings/development.services.yml
+settings/phpunit.xml
+vendor/
+bin/
+composer.lock
+etc/ssl/*
+
+# TO DELETE IF YOU WANT ADD YOUR CONFIG IN YOUR GIT REPO.
+config/*
+composer.json
+composer.required.json
+composer.suggested.json
+docker-compose.yml
+
+###                                                                          ###
+#                                                                              #
+# ------- Uncomment that if you need to add web/* files into your git. ------  #
+#                                                                              #
+###                                                                          ###
+
+#/web/core/
+#/web/modules/contrib
+#/web/themes/contrib
+#/web/profiles/contrib
+#/web/libraries/
+
+# Ignore Core files provide by drupal-scaffold.
+#/web/.csslintrc
+#/web/.editorconfig
+#/web/.eslintignore
+#/web/.eslintrc
+#/web/.gitattributes
+#/web/.htaccess
+#web/index.php
+#web/profiles/
+#web/robots.txt
+#/web/sites/default/
+#web/sites/example.settings.local.php
+#web/sites/example.sites.php
+#web/update.php
+#web/web.config
+#web/autoload.php
+#web/sites/development.services.yml
+
+# Ignore default text files provide by scaffold
+#/web/CHANGELOG.txt
+#/web/COPYRIGHT.txt
+#/web/INSTALL*.txt
+#/web/LICENSE.txt
+#/web/MAINTAINERS.txt
+#/web/UPGRADE.txt
+#/web/README.txt
+#/web/sites/all/README.txt
+#/web/sites/all/modules/README.txt
+#/web/sites/all/themes/README.txt

@@ -1,0 +1,86 @@
+version: '3'
+
+services:
+    php:
+        build:
+            context: ./drupal8
+        container_name: php
+        depends_on:
+            - db
+        env_file:
+            - ./drupal8/.env
+        # Comment out these volumes in production
+        volumes:
+            - ./drupal8:/app/drupal8:rw,cached
+            # If you develop on Linux, comment out the following volumes to just use bind-mounted project directory from host
+        environment:
+            # If you develop on Windows change this to remote_host=docker.for.win.localhost
+            # If you develop on Linux change this to remote_host=172.17.0.1
+            XDEBUG_CONFIG: "remote_host=docker.for.mac.localhost idekey=IDE_XDEBUG"
+
+    drupal8:
+        build:
+            context: ./drupal8
+            dockerfile: Dockerfile.nginx
+        container_name: drupal8
+        depends_on:
+            - php
+        ports:
+            - "8080:80"
+        volumes:
+            - ./drupal8/web:/app/drupal8/web:ro
+
+    cache-proxy:
+        build:
+            context: ./drupal8/
+            dockerfile: ./Dockerfile.varnish
+        container_name: cache-proxy
+        depends_on:
+            - drupal8
+        # Comment out this volume in production
+        volumes:
+            - ./drupal8/docker/varnish/conf:/etc/varnish:ro
+        ports:
+            - "8081:80"
+
+    db:
+        image: mysql:5.7.22
+        container_name: db
+        restart: always
+        env_file:
+            - ".env"
+        environment:
+            - MYSQL_DATABASE=drupal
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=drupal
+            - MYSQL_PASSWORD=drupal
+        ports:
+            - "5432:5432"
+        volumes:
+            - "./data/db/mysql:/var/lib/mysql"
+
+    adminer:
+      image: adminer
+      container_name: adminer
+      depends_on:
+          - db
+      restart: always
+      ports:
+        - 2000:8080
+
+    h2-proxy:
+        # Don't use this proxy in prod
+        build:
+            context: ./h2-proxy
+            dockerfile: ./Dockerfile
+        container_name: h2-proxy
+        depends_on:
+            - drupal8
+            - cache-proxy
+        ports:
+            - "80:80"
+            - "443:443"
+            - "8443:8443"
+
+volumes:
+    db-data: {}

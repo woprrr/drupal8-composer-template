@@ -1,0 +1,9 @@
+{
+  "require": {
+    "drupal/toggle_editable_fields": "^1.0",
+    "drupal/field_permissions": "1.0-rc1",
+    "npm-asset/bootstrap-toggle": "^2.2",
+    "drupal/simplenews": "1.x-dev",
+    "drupal/group": "1.x-dev"
+  }
+}
