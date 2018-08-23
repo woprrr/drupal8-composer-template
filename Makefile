@@ -25,6 +25,9 @@ help:
 	@echo "  ${BLUE}drupal-si             : ${LIGHT_BLUE}Install new Drupal instance and drop database.${NC}"
 	@echo "  ${BLUE}drupal-update         : ${LIGHT_BLUE}Update your current Drupal instance and (re)import your \`/config\` exported configuration.${NC}"
 	@echo "  ${BLUE}drupal-config-export  : ${LIGHT_BLUE}Export your current Drupal instance from \`/config\` by default. That can be in sub-folder depend your custom changes.${NC}"
+	@echo "\n${YELLOW}Drush specific commands:${NC}"
+	@echo "  ${BLUE}drush            	  : ${LIGHT_BLUE}Execute the given command from arguments ${YELLOW}\`eg: make drush command=cr\` .${NC}"
+	@echo "  ${BLUE}drupal-clear-all-caches : ${LIGHT_BLUE}Flush all caches from Drupal App.${NC}"
 
 init:
 	@echo "${BLUE}Project configuration initialization:${NC}"
@@ -61,7 +64,7 @@ clean-drupal-config:
 
 code-sniff:
 	@echo "${BLUE}Check your Drupal project with PHP Code Sniffer:${NC}"
-	@docker-compose exec -T php composer phpcs
+	@docker-compose exec -T php composer phpcs $(path)
 
 c-update:
 	@echo "${BLUE}Updating your application dependencies:${NC}"
@@ -78,6 +81,14 @@ drupal-si:
 	# Restart PHP-FPM to avoid caches of container if you change ENV variables.
 	@docker-compose up -d php
 	@docker-compose exec -T php composer site-install
+
+drush:
+	@echo "${BLUE}Perform Drush [$(command)] command:${NC}"
+	@docker-compose exec -T php bin/drush -r=/web $(command)
+
+drupal-clear-all-caches:
+	@echo "${BLUE}Clearings all Drupal caches:${NC}"
+	@docker-compose exec -T php bin/drush -r=/web cr
 
 drupal-update:
 	@echo "${BLUE}Updating your Drupal Application:${NC}"
