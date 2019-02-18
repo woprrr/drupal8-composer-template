@@ -12,7 +12,7 @@ services:
         # Comment out these volumes in production
         volumes:
             - ./drupal8:/app/drupal8:rw,cached
-            # If you develop on Linux, comment out the following volumes to just use bind-mounted project directory from host
+            # If you develop on Linux, comment out the followsing volumes to just use bind-mounted project directory from host
         environment:
             # If you develop on Windows change this to remote_host=docker.for.win.localhost
             # If you develop on Linux change this to remote_host=172.17.0.1
