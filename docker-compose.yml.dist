@@ -12,11 +12,12 @@ services:
         # Comment out these volumes in production
         volumes:
             - ./drupal8:/app/drupal8:rw,cached
-            # If you develop on Linux, comment out the following volumes to just use bind-mounted project directory from host
+            # If you develop on Linux, comment out the followsing volumes to just use bind-mounted project directory from host
         environment:
             # If you develop on Windows change this to remote_host=docker.for.win.localhost
             # If you develop on Linux change this to remote_host=172.17.0.1
             XDEBUG_CONFIG: "remote_host=docker.for.mac.localhost idekey=IDE_XDEBUG"
+            PHP_IDE_CONFIG: "serverName=docker-server"
 
     drupal8:
         build:
@@ -46,18 +47,17 @@ services:
     db:
         image: mysql:5.7.22
         container_name: db
-        restart: always
         env_file:
-            - ".env"
+            - ./drupal8/.env
         environment:
             - MYSQL_DATABASE=drupal
             - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_USER=drupal
-            - MYSQL_PASSWORD=drupal
-        ports:
-            - "5432:5432"
+            - MYSQL_USER=dev
+            - MYSQL_PASSWORD=dev
         volumes:
-            - "./data/db/mysql:/var/lib/mysql"
+            - db-data:/var/lib/mysql:rw
+        ports:
+            - "3306:3306"
 
     adminer:
       image: adminer

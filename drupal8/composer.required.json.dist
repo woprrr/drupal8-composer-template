@@ -39,15 +39,6 @@
     "drupal/config_installer": "^1.5"
   },
   "extra": {
-    "patches": {
-      "drupal/core": {
-        "2880374 - Experimental modules should not have warnings after being installed":
-        "https://www.drupal.org/files/issues/2880374-remove-experimental-warnings-6.patch",
-        "2869592 - Disabled update module shouldn't produce a status report warning":
-        "https://www.drupal.org/files/issues/2869592-remove-update-warning-7.patch",
-        "2885441 - EntityReferenceAutocompleteWidget should define its size setting as an integer":
-        "https://www.drupal.org/files/issues/2885441-2.patch"
-      }
-    }
+    "patches": {}
   }
 }

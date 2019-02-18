@@ -1,5 +1,5 @@
-# Symfony 4 skeleton docker
-Symfony 4 starter-kit for multi container stack.
+# Drupal 8 skeleton docker
+Drupal 8 starter-kit for multi container stack.
 
 ## Overview
 
@@ -50,7 +50,7 @@ which make
 
 * Nginx
 * Varnish
-* Postgres
+* Mysql
 * Adminer
 
 You should be careful when installing third party web servers such as MySQL or Nginx.
@@ -59,7 +59,7 @@ This project use the following ports :
 
 | Server     | Port |
 |------------|------|
-| Postgres      | 5432 |
+| Mysql      | 3306 |
 | Adminer | 2000 |
 | Nginx      | 8080 |
 |  H2-Proxy (SSL) | 80 |
@@ -71,13 +71,13 @@ ___
 To install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), download it and install following the instructions :
 
 ```sh
-git clone -b symfony-4-skeleton-docker git@github.com:woprrr/symfony-4-skeleton-docker.git
+git clone -b drupal-8-skeleton-docker git@github.com:woprrr/drupal8-composer-template.git
 ```
 
 Go to the project directory :
 
 ```sh
-cd symfony-4-skeleton-docker
+cd drupal-8-skeleton-docker
 ```
 
 ### Project tree
@@ -88,22 +88,33 @@ cd symfony-4-skeleton-docker
 ├── Makefile
 ├── README.md
 ├── client_secrets.json.enc
+├── docker-compose.yml
 ├── docker-compose.yml.dist
+├── drupal8
+│   ├── Dockerfile
+│   ├── Dockerfile.nginx
+│   ├── Dockerfile.varnish
+│   ├── app
+│   ├── bin
+│   ├── composer.contributed.json
+│   ├── composer.json
+│   ├── composer.json.dist
+│   ├── composer.lock
+│   ├── composer.required.json
+│   ├── composer.required.json.dist
+│   ├── composer.suggested.json
+│   ├── composer.suggested.json.dist
+│   ├── config
+│   ├── docker
+│   ├── scripts
+│   ├── settings
+│   ├── vendor
+│   └── web
 ├── h2-proxy
 │   ├── Dockerfile
 │   └── conf.d
-├── helm
-│   └── symfony
-└── symfony
-    ├── Dockerfile
-    ├── Dockerfile.nginx
-    ├── Dockerfile.varnish
-    ├── bin
-    ├── composer.json.dist
-    ├── config
-    ├── docker
-    ├── public
-    └── src
+└── helm
+    └── drupal8
 ```
 
 ___
@@ -118,19 +129,24 @@ ___
 
 1. Setup project environment variables :
 
-    Setup your project by editing the `.env` file and customize all environement variables. By default the ENV file are in symfony folder `./symfony/.env`
+    Setup your project by editing the `.env` file and customize all environment variables. By default the ENV file are in drupal folder `./drupal8/.env`
 
 2. Initialize/Install project dependencies :
 
     ```sh
-    make docker-start
+    make docker-start && make drupal8-c-install
+    ```
+3. Installing Drupal 8 project :
+
+    ```sh
+    make drupal8-si
     ```
 
 3. Open your favorite browser :
 
     * [http://localhost:8080](http://localhost:8080/) (Web Front).
     * [http://localhost:80](https://localhost/) (Web Front HTTPS).
-    * [http://localhost:2000](http://localhost:2000/) Adminer (username: symfony, password: symfony)
+    * [http://localhost:2000](http://localhost:2000/) Adminer (username: root, password: root)
 
 4. Stop and clear services :
 

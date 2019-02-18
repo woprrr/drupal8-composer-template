@@ -33,22 +33,23 @@ help:
 init:
 	@echo "${BLUE}Project configuration initialization:${NC}"
 	@$(shell cp -n $(shell pwd)/docker-compose.yml.dist $(shell pwd)/docker-compose.yml 2> /dev/null)
+	@mkdir $(shell pwd)/drupal8/web
 	@$(shell cp -n $(shell pwd)/drupal8/composer.json.dist $(shell pwd)/drupal8/composer.json 2> /dev/null)
-	@$(shell cp -n $(shell pwd)/drupal8/composer.required.json.dist $(shell pwd)/drupal8/composer.json 2> /dev/null)
-	@$(shell cp -n $(shell pwd)/drupal8/composer.suggested.json.dist $(shell pwd)/drupal8/composer.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/drupal8/composer.required.json.dist $(shell pwd)/drupal8/composer.required.json 2> /dev/null)
+	@$(shell cp -n $(shell pwd)/drupal8/composer.suggested.json.dist $(shell pwd)/drupal8/composer.suggested.json 2> /dev/null)
 	@$(shell cp -n $(shell pwd)/drupal8/settings/settings.local.php.dist $(shell pwd)/drupal8/settings/settings.local.php 2> /dev/null)
 	@$(shell cp -n $(shell pwd)/drupal8/settings/development.services.yml.dist $(shell pwd)/drupal8/settings/development.services.yml 2> /dev/null)
 	@$(shell cp -n $(shell pwd)/drupal8/settings/phpunit.xml.dist $(shell pwd)/drupal8/settings/phpunit.xml 2> /dev/null)
 
 clean:
 	@echo "${BLUE}Clean directories:${NC}"
-	@rm -Rf drupal8//vendor/
-	@rm -Rf drupal8//composer.lock
-	@rm -Rf drupal8//settings/settings.local.php
-	@rm -Rf drupal8//settings/development.services.yml
-	@rm -Rf drupal8//settings/phpunit.xml
-	@rm -Rf drupal8//web/
-	@rm -Rf drupal8//bin/
+	@rm -Rf drupal8/vendor/
+	@rm -Rf drupal8/composer.lock
+	@rm -Rf drupal8/settings/settings.local.php
+	@rm -Rf drupal8/settings/development.services.yml
+	@rm -Rf drupal8/settings/phpunit.xml
+	@rm -Rf drupal8/web/
+	@rm -Rf drupal8/bin/
 	@rm -Rf drupal8/app/Drupal/parameters.yml
 	@rm -Rf drupal8/composer.required.json
 	@rm -Rf drupal8/composer.suggested.json
