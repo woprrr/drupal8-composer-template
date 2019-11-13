@@ -110,6 +110,7 @@ class DrupalUpdate extends DrupalHandlerBase {
 
     $io->write("<info>#step {$step}.</info> Clear Caches");
     $process = new Process(self::drush() . ' cr');
+    $process->setTimeout('1200');
     $process->run();
 
     if (!$process->isSuccessful()) {

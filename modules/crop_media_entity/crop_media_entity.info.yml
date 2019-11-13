@@ -1,6 +1,0 @@
-name: Media entity crop
-description: 'Deprecated.'
-core: 8.x
-package: Media
-type: module
-hidden: true

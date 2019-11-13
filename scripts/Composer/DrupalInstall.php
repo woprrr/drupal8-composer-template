@@ -60,6 +60,7 @@ class DrupalInstall extends DrupalHandlerBase {
 
     $io->write("<info>#step {$step}.</info> Drupal install : Clear Caches");
     $process = new Process(self::drush() . ' cr');
+    $process->setTimeout('1200');
     $process->run();
 
     if (!$process->isSuccessful()) {

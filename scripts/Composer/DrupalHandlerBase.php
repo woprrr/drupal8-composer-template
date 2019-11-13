@@ -103,7 +103,7 @@ abstract class DrupalHandlerBase {
       $module_enable_process .= $module . ' ';
     }
     $process = new Process($module_enable_process . '-y');
-
+    $process->setTimeout('1200');
     $process->run();
 
     if (!$process->isSuccessful()) {
