@@ -16,9 +16,11 @@
     "drupal/admin_toolbar": "^1.0",
     "drupal/libraries": "3.x-dev",
     "drupal/entity_browser": "2.0.0-alpha1",
-    "drupal/form_mode_manager": "^1.0",
-    "drupal/crop": "^2.0@beta",
-    "drupal/image_widget_crop": "2.x-dev"
+    "drupal/form_mode_manager": "2.x-dev",
+    "drupal/crop": "2.x-dev",
+    "drupal/image_widget_crop": "2.x-dev",
+    "drupal/config_inspector": "1.0-beta2",
+    "drupal/automated_crop": "1.x-dev"
   },
   "extra": {
     "patches": {

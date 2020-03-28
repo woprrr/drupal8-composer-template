@@ -12,6 +12,7 @@ report/
 /.idea/
 
 /web/
+/console/
 
 # Ignore settings local files.
 app/Drupal/parameters.yml
